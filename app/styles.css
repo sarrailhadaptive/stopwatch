@@ -10,9 +10,21 @@
 }
 
 .lapScrollbarDiv {
-    background-color: red;
+    background-color: black;
     width: 331px;
     height: 230px;
+}
+
+.listingLaps {
+    margin: 0 12px 0 12px;
+    padding-inline-start: 0;
+    border-top: solid 0.1px gray;
+}
+
+.listingLaps li {
+    height: 34px;
+    list-style-type: none;
+    border-bottom: solid 0.1px gray;
 }
 
 .navBarBottom {
