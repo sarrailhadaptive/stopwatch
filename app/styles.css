@@ -1,5 +1,36 @@
+@font-face {
+    font-family: "SFProText";
+    src: url("./font/SFProText.ttf");
+}
+
 .main {
     background-color: black;
     width: 331px;
-    height: 715px;
+    height: 409px;
+}
+
+.lapScrollbarDiv {
+    background-color: red;
+    width: 331px;
+    height: 230px;
+}
+
+.navBarBottom {
+    background-color: #1C1C1E;
+    width: 331px;
+    height: 66px;
+}
+
+.timer {
+    font-family: "SFProText";
+    padding-top: 121px;
+    width: 331px;
+    height: 78px;
+    font-size: 30px;
+    text-align: center;
+    color: #FFFFFF;
+}
+
+.timer h1 {
+    font-weight: 10;
 }
