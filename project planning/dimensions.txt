@@ -1,0 +1,3 @@
+Notion dimension check
+width = 331px
+height = 715px
