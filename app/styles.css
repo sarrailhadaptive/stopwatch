@@ -1,13 +1,19 @@
+/* FONTS */
+
 @font-face {
     font-family: "SFProText";
     src: url("./font/SFProText.ttf");
 }
+
+/* SCREEN VIEW */
 
 .main {
     background-color: black;
     width: 331px;
     height: 409px;
 }
+
+/* LAP SCROLLBAR */
 
 .lapScrollbarDiv {
     background-color: black;
@@ -27,11 +33,15 @@
     border-bottom: solid 0.1px gray;
 }
 
+/* NAVIGATION BAR BOTTOM */
+
 .navBarBottom {
     background-color: #1C1C1E;
     width: 331px;
     height: 66px;
 }
+
+/* TIMER */
 
 .timer {
     font-family: "SFProText";
@@ -45,4 +55,37 @@
 
 .timer h1 {
     font-weight: 10;
+}
+
+/* RESET/LAP START/STOP BUTTONS */
+/* COLORS 
+ LAP ON HOVER AND RESET BACKGROUND #3A3A3C
+ LAP BEFORE START #2C2C2E
+*/
+.resetLapBtn {
+    background-color: #2C2C2E;
+    border-radius: 36px;
+    width: 60px;
+    height: 60px;
+    position: absolute;
+    top: 345px;
+    left: 21px;
+}
+/* COLORS
+ START TEXT #04DE71
+ START BACKGROUND #04DE71 + opacity 0.25
+ STOP TEXT #FF3B30
+ STOP BACKGROUND #FF3B30 + opacity 0.25
+
+*/
+
+.startStopBtn {
+    background-color: #04DE71;
+    opacity: 0.25;
+    border-radius: 36px;
+    width: 60px;
+    height: 60px;
+    position: absolute;
+    top: 345px;
+    left: 266px;
 }
