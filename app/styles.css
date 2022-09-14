@@ -62,8 +62,8 @@
     font-weight: 10;
 }
 
-/* RESET/LAP START/STOP BUTTONS */
-/* COLORS 
+/* RESET/LAP START/STOP BUTTONS
+COLORS 
  LAP ON HOVER AND RESET BACKGROUND #3A3A3C
  LAP BEFORE START #2C2C2E
 */
@@ -89,14 +89,15 @@
 }
 
 .resetBtnBorder h4 {
-    opacity: 0.4;
     padding-top: 3px;
     text-align: center;
-    color: #FFFFFF;
+    color: #8D8D92;
     font-size: small;
     font-family: "SFProText";
 }
-/* COLORS
+
+/* START AND STOP BUTTON
+COLORS
  START TEXT #04DE71
  START BACKGROUND #16472E
  STOP TEXT #FF3B30

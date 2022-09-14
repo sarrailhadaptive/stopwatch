@@ -6,65 +6,31 @@ let miliSeconds = 0;
 let seconds = 0;
 let minutes = 0;
 let interval;
-let toggler = false;
+let togglerStartStop = false;
+let togglerLapReset = false;
 const startStopBtn = document.getElementsByClassName('startBtnBorder')[0];
 const resetLapBtn = document.getElementsByClassName('resetLapBtn')[0];
+const resetBtnBorder = document.getElementsByClassName('resetBtnBorder')[0];
 const startTimerBtn = document.getElementsByClassName('startTimerBtn')[0];
-console.log(outputMinutes)
+
 
 startStopBtn.addEventListener('click', startTimer);
 
+// STARTING AND STOPPING TIMER
 function startTimer(){
-    toggleBtn();
+    toggleStartStopBtn();
+    setStartStopBtnToStop();
+    toggleLapResetBtn();
     clearInterval(interval);
     interval = setInterval(startCounting, 10);
-}
-
-function setStartStopBtnToStart(){
-    startStopBtn.setAttribute('id', 'default');
-    startTimerBtn.setAttribute('style', 'background-color: #16472E');
-    startStopBtn.firstElementChild.textContent = 'Start';
-    toggler = !toggler;
-}
-
-function setStartStopBtnToStop(){
-    startStopBtn.setAttribute('id', 'stopBtnBorder');
-    startTimerBtn.setAttribute('style', 'background-color: #50211F');
-    startStopBtn.firstElementChild.textContent = 'Stop';
-    toggler = !toggler;
 }
 
 function stopTimer(){
     clearInterval(interval);
     startStopBtn.removeEventListener('click', stopTimer);
     startStopBtn.addEventListener('click', startTimer);
-    // startStopBtn.setAttribute('id', 'default');
-    // startTimerBtn.setAttribute('style', 'background-color: #16472E');
-    // startStopBtn.firstElementChild.textContent = 'Start';
-    // toggler = !toggler;
     setStartStopBtnToStart();
-}
-
-function toggleBtn(){
-    if(toggler === false) {
-        startStopBtn.removeEventListener('click', startTimer);
-        startStopBtn.addEventListener('click', stopTimer);
-        // startStopBtn.setAttribute('id', 'stopBtnBorder');
-        // startTimerBtn.setAttribute('style', 'background-color: #50211F');
-        // startStopBtn.firstElementChild.textContent = 'Stop';
-        // toggler = !toggler;
-        setStartStopBtnToStop();
-        return this;
-    };
-    if(toggler === true) {
-        startCounting();
-        // startStopBtn.setAttribute('id', 'default');
-        // startTimerBtn.setAttribute('style', 'background-color: #16472E');
-        // startStopBtn.firstElementChild.textContent = 'Start';
-        // toggler = !toggler;
-        setStartStopBtnToStart();
-        return this;
-    };
+    setResetButton();
 }
 
 function startCounting() {
@@ -83,6 +49,61 @@ function startCounting() {
         outputMinutes.innerHTML = '0' + minutes;
         seconds = 0;
         outputSeconds.innerHTML = '0' + seconds;
-    }
+    };
+}
+// ------------------------ //
+
+// TOGGLING START/STOP BUTTONS
+function setStartStopBtnToStart(){
+    startStopBtn.setAttribute('id', 'default');
+    startTimerBtn.setAttribute('style', 'background-color: #16472E');
+    startStopBtn.firstElementChild.textContent = 'Start';
+    togglerStartStop = !togglerStartStop;
 }
 
+function setStartStopBtnToStop(){
+    startStopBtn.setAttribute('id', 'stopBtnBorder');
+    startTimerBtn.setAttribute('style', 'background-color: #50211F');
+    startStopBtn.firstElementChild.textContent = 'Stop';
+    togglerStartStop = !togglerStartStop;
+}
+
+function toggleStartStopBtn(){
+    if(togglerStartStop === false) {
+        startStopBtn.removeEventListener('click', startTimer);
+        startStopBtn.addEventListener('click', stopTimer);
+        return this;
+    };
+    if(togglerStartStop === true) {
+        startCounting();
+        setStartStopBtnToStart();
+        return this;
+    };
+}
+// --------------------------- //
+
+// TOGGLING LAP/RESET BUTTONS
+function activateLapBtn(){
+    resetBtnBorder.setAttribute('style', 'background-color: #3A3A3C');
+    resetLapBtn.setAttribute('style', 'background-color: #3A3A3C');
+    resetBtnBorder.firstElementChild.setAttribute('style', 'color: #FFFFFF');
+    resetBtnBorder.firstElementChild.innerHTML = 'Lap';
+    togglerLapReset = !togglerLapReset;
+}
+
+function setResetButton(){
+    resetBtnBorder.firstElementChild.innerHTML = 'Reset';
+    togglerLapReset = !togglerLapReset;
+}
+
+function toggleLapResetBtn(){
+    if(togglerLapReset === false) {
+        activateLapBtn();
+        return this;
+    };
+    if(togglerLapReset === true){
+        setResetButton();
+        return this;
+    }
+}
+// --------------------------- //
