@@ -65,22 +65,31 @@
 .resetLapBtn {
     background-color: #2C2C2E;
     border-radius: 36px;
-    width: 60px;
-    height: 60px;
+    width: 65px;
+    height: 65px;
     position: absolute;
-    top: 345px;
+    top: 340px;
     left: 21px;
 }
 
 .resetBtnBorder {
     background-color: #2C2C2E;
-    height: 54px;
-    width: 54px;
+    height: 59px;
+    width: 59px;
     position: absolute;
-    top: 347px;
+    top: 342px;
     left: 23px;
     border-radius: 36px;
     border: solid 1px black;
+}
+
+.resetBtnBorder h4 {
+    opacity: 0.4;
+    padding-top: 3px;
+    text-align: center;
+    color: #FFFFFF;
+    font-size: small;
+    font-family: "SFProText";
 }
 /* COLORS
  START TEXT #04DE71
@@ -93,20 +102,28 @@
 .startStopBtn {
     background-color: #16472E;
     border-radius: 36px;
-    width: 60px;
-    height: 60px;
+    width: 65px;
+    height: 65px;
     position: absolute;
-    top: 345px;
-    left: 266px;
+    top: 340px;
+    left: 261px;
 }
 
 .startBtnBorder {
     background-color: #16472E;
-    height: 54px;
-    width: 54px;
+    height: 59px;
+    width: 59px;
     position: absolute;
-    top: 347px;
-    left: 268px;
+    top: 342px;
+    left: 263px;
     border-radius: 36px;
     border: solid 1px black;
+}
+
+.startBtnBorder h4 {
+    padding-top: 3px;
+    text-align: center;
+    color: #04DE71;
+    font-size: small;
+    font-family: "SFProText";
 }
