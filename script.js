@@ -12,11 +12,23 @@ const resetLapBtn = document.getElementsByClassName('resetLapBtn')[0];
 const startTimerBtn = document.getElementsByClassName('startTimerBtn')[0];
 console.log(outputMinutes)
 
-startStopBtn.addEventListener('click', () => {
+startStopBtn.addEventListener('click', startTimer);
+
+function startTimer(){
     toggleBtn();
     clearInterval(interval);
     interval = setInterval(startCounting, 10);
-});
+}
+
+function stopTimer(){
+    clearInterval(interval);
+    startStopBtn.removeEventListener('click', stopTimer);
+    startStopBtn.addEventListener('click', startTimer);
+    startStopBtn.setAttribute('id', 'default');
+    startTimerBtn.setAttribute('style', 'background-color: #16472E');
+    startStopBtn.firstElementChild.textContent = 'Start';
+    toggler = !toggler;
+}
 
 function toggleBtn(){
     console.log('Toggle Class')
@@ -26,6 +38,8 @@ function toggleBtn(){
     // THIS WORKS BUT ITS INCOMPLETE
     // toggler === false ? startStopBtn.setAttribute('id', 'stopBtnBorder') : startStopBtn.setAttribute('id', 'default');
     if(toggler === false) {
+        startStopBtn.removeEventListener('click', startTimer);
+        startStopBtn.addEventListener('click', stopTimer);
         startStopBtn.setAttribute('id', 'stopBtnBorder');
         startTimerBtn.setAttribute('style', 'background-color: #50211F');
         startStopBtn.firstElementChild.textContent = 'Stop';
@@ -33,6 +47,7 @@ function toggleBtn(){
         return this;
     };
     if(toggler === true) {
+        startCounting();
         startStopBtn.setAttribute('id', 'default');
         startTimerBtn.setAttribute('style', 'background-color: #16472E');
         startStopBtn.firstElementChild.textContent = 'Start';
