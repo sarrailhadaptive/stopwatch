@@ -6,14 +6,19 @@ let miliSeconds = 0;
 let seconds = 0;
 let minutes = 0;
 let interval;
-const startStopBtn = document.getElementById('startBtnBorder');
-const resetLapBtn = document.getElementById('resetLapBtn');
+const startStopBtn = document.getElementsByClassName('startBtnBorder')[0];
+const resetLapBtn = document.getElementsByClassName('resetLapBtn')[0];
+console.log(outputMinutes)
 
 startStopBtn.addEventListener('click', () => {
-    console.log('TEST')
+    toggleBtn();
     clearInterval(interval);
     interval = setInterval(startCounting, 10);
 });
+
+function toggleBtn(){
+    console.log('Toggle Class')
+}
 
 function startCounting() {
     miliSeconds++;
