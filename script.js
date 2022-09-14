@@ -6,8 +6,10 @@ let miliSeconds = 0;
 let seconds = 0;
 let minutes = 0;
 let interval;
+let toggler = false;
 const startStopBtn = document.getElementsByClassName('startBtnBorder')[0];
 const resetLapBtn = document.getElementsByClassName('resetLapBtn')[0];
+const startTimerBtn = document.getElementsByClassName('startTimerBtn')[0];
 console.log(outputMinutes)
 
 startStopBtn.addEventListener('click', () => {
@@ -18,6 +20,25 @@ startStopBtn.addEventListener('click', () => {
 
 function toggleBtn(){
     console.log('Toggle Class')
+    // NEEDS FIXING TOGGLING DOESNT WORK, ONLY CHANGES ONCE
+    // if(startStopBtn.hasAttribute('id', 'stopBtnBorder')) startStopBtn.setAttribute('id', 'default');
+    // if(startStopBtn.hasAttribute('id', 'default')) startStopBtn.setAttribute('id', 'stopBtnBorder');
+    // THIS WORKS BUT ITS INCOMPLETE
+    // toggler === false ? startStopBtn.setAttribute('id', 'stopBtnBorder') : startStopBtn.setAttribute('id', 'default');
+    if(toggler === false) {
+        startStopBtn.setAttribute('id', 'stopBtnBorder');
+        startTimerBtn.setAttribute('style', 'background-color: #50211F');
+        startStopBtn.firstElementChild.textContent = 'Stop';
+        toggler = !toggler;
+        return this;
+    };
+    if(toggler === true) {
+        startStopBtn.setAttribute('id', 'default');
+        startTimerBtn.setAttribute('style', 'background-color: #16472E');
+        startStopBtn.firstElementChild.textContent = 'Start';
+        toggler = !toggler;
+        return this;
+    };
 }
 
 function startCounting() {

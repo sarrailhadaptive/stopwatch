@@ -133,8 +133,8 @@
     font-family: "SFProText";
 }
 
-.stopBtnBorder {
-    background-color: #FF3B30;
+#stopBtnBorder {
+    background-color: #50211F;
     height: 59px;
     width: 59px;
     position: absolute;
@@ -144,7 +144,7 @@
     border: solid 1px black;
 }
 
-.stopBtnBorder h4 {
+#stopBtnBorder h4 {
     padding-top: 3px;
     text-align: center;
     color: #FF3B30;
