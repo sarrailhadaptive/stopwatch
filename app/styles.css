@@ -44,16 +44,21 @@
 /* TIMER */
 
 .timer {
+    justify-content: center;
+    display: inline-flex;
     font-family: "SFProText";
     padding-top: 121px;
     width: 331px;
     height: 78px;
-    font-size: 30px;
+    font-size: 65px;
     text-align: center;
     color: #FFFFFF;
 }
 
-.timer h1 {
+.timer div {
+    padding-right: 3px;
+    width: 78px;
+    float: left;
     font-weight: 10;
 }
 
