@@ -62,7 +62,7 @@
  LAP ON HOVER AND RESET BACKGROUND #3A3A3C
  LAP BEFORE START #2C2C2E
 */
-.resetLapBtn {
+#resetLapBtn {
     background-color: #2C2C2E;
     border-radius: 36px;
     width: 65px;
@@ -72,7 +72,7 @@
     left: 21px;
 }
 
-.resetBtnBorder {
+#resetBtnBorder {
     background-color: #2C2C2E;
     height: 59px;
     width: 59px;
@@ -83,7 +83,7 @@
     border: solid 1px black;
 }
 
-.resetBtnBorder h4 {
+#resetBtnBorder h4 {
     opacity: 0.4;
     padding-top: 3px;
     text-align: center;
@@ -99,7 +99,7 @@
 #16472e
 */
 
-.startStopBtn {
+#startStopBtn {
     background-color: #16472E;
     border-radius: 36px;
     width: 65px;
@@ -109,7 +109,7 @@
     left: 261px;
 }
 
-.startBtnBorder {
+#startBtnBorder {
     background-color: #16472E;
     height: 59px;
     width: 59px;
@@ -120,7 +120,7 @@
     border: solid 1px black;
 }
 
-.startBtnBorder h4 {
+#startBtnBorder h4 {
     padding-top: 3px;
     text-align: center;
     color: #04DE71;
