@@ -21,8 +21,16 @@ function startCounting() {
     if(miliSeconds > 9) outputMiliSeconds.innerHTML = miliSeconds;
     if(miliSeconds > 59) {
         seconds++;
-        outputMiliSeconds.innerHTML = '0' + miliSeconds;
+        outputSeconds.innerHTML = '0' + seconds;
         miliSeconds = 0;
+        outputMiliSeconds.innerHTML = '0' + miliSeconds;
     };
+    if(seconds > 9) outputSeconds.innerHTML = seconds;
+    if(seconds > 59) {
+        minutes++;
+        outputMinutes.innerHTML = '0' + minutes;
+        seconds = 0;
+        outputSeconds.innerHTML = '0' + seconds;
+    }
 }
 
