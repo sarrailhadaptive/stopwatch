@@ -71,21 +71,42 @@
     top: 345px;
     left: 21px;
 }
+
+.resetBtnBorder {
+    background-color: #2C2C2E;
+    height: 54px;
+    width: 54px;
+    position: absolute;
+    top: 347px;
+    left: 23px;
+    border-radius: 36px;
+    border: solid 1px black;
+}
 /* COLORS
  START TEXT #04DE71
  START BACKGROUND #04DE71 + opacity 0.25
  STOP TEXT #FF3B30
  STOP BACKGROUND #FF3B30 + opacity 0.25
-
+#16472e
 */
 
 .startStopBtn {
-    background-color: #04DE71;
-    opacity: 0.25;
+    background-color: #16472E;
     border-radius: 36px;
     width: 60px;
     height: 60px;
     position: absolute;
     top: 345px;
     left: 266px;
+}
+
+.startBtnBorder {
+    background-color: #16472E;
+    height: 54px;
+    width: 54px;
+    position: absolute;
+    top: 347px;
+    left: 268px;
+    border-radius: 36px;
+    border: solid 1px black;
 }
