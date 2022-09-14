@@ -13,7 +13,7 @@ const resetLapBtn = document.getElementsByClassName('resetLapBtn')[0];
 const resetBtnBorder = document.getElementsByClassName('resetBtnBorder')[0];
 const startTimerBtn = document.getElementsByClassName('startTimerBtn')[0];
 
-
+// STARTING EVENT LISTENERS
 startStopBtn.addEventListener('click', startTimer);
 
 // STARTING AND STOPPING TIMER
@@ -55,6 +55,7 @@ function startCounting() {
 
 // TOGGLING START/STOP BUTTONS
 function setStartStopBtnToStart(){
+    // CREATE A CLASS TO ASSIGN WHEN NEEDED INSTEAD OF PUSHING INLINE STYLE
     startStopBtn.setAttribute('id', 'default');
     startTimerBtn.setAttribute('style', 'background-color: #16472E');
     startStopBtn.firstElementChild.textContent = 'Start';
@@ -62,6 +63,7 @@ function setStartStopBtnToStart(){
 }
 
 function setStartStopBtnToStop(){
+    // CREATE A CLASS TO ASSIGN WHEN NEEDED INSTEAD OF PUSHING INLINE STYLE
     startStopBtn.setAttribute('id', 'stopBtnBorder');
     startTimerBtn.setAttribute('style', 'background-color: #50211F');
     startStopBtn.firstElementChild.textContent = 'Stop';
@@ -84,6 +86,7 @@ function toggleStartStopBtn(){
 
 // TOGGLING LAP/RESET BUTTONS
 function activateLapBtn(){
+    // CREATE A CLASS TO ASSIGN WHEN NEEDED INSTEAD OF PUSHING INLINE STYLE
     resetBtnBorder.setAttribute('style', 'background-color: #3A3A3C');
     resetLapBtn.setAttribute('style', 'background-color: #3A3A3C');
     resetBtnBorder.firstElementChild.setAttribute('style', 'color: #FFFFFF');
