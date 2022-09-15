@@ -29,8 +29,24 @@
 
 .listingLaps li {
     height: 34px;
+    color: #FFFFFF;
+    font-family: "SFProText";
+    font-size: 14px;
     list-style-type: none;
     border-bottom: solid 0.1px gray;
+}
+
+.listingLaps p {
+    width: 60px;
+    margin-top: 9px;
+}
+
+.lap {
+    float: left;
+}
+
+.lapTime {
+    float: right;
 }
 
 /* NAVIGATION BAR BOTTOM */

@@ -2,25 +2,30 @@
 let outputMinutes = document.getElementById('minutes');
 let outputSeconds = document.getElementById('seconds');
 let outputMiliSeconds = document.getElementById('miliSeconds');
+const startStopBtn = document.getElementsByClassName('startBtnBorder')[0];
+const resetLapBtn = document.getElementsByClassName('resetLapBtn')[0];
+const resetBtnBorder = document.getElementsByClassName('resetBtnBorder')[0];
+const startTimerBtn = document.getElementsByClassName('startTimerBtn')[0];
+const defaultLapList = document.getElementsByClassName('defaultLap');
+
+// DECLARING NECESSARY ELEMENTS
 let miliSeconds = 0;
 let seconds = 0;
 let minutes = 0;
 let interval;
 let togglerStartStop = false;
 let togglerLapReset = false;
-const startStopBtn = document.getElementsByClassName('startBtnBorder')[0];
-const resetLapBtn = document.getElementsByClassName('resetLapBtn')[0];
-const resetBtnBorder = document.getElementsByClassName('resetBtnBorder')[0];
-const startTimerBtn = document.getElementsByClassName('startTimerBtn')[0];
+
 
 // STARTING EVENT LISTENERS
 startStopBtn.addEventListener('click', startTimer);
 
 // STARTING AND STOPPING TIMER
 function startTimer(){
-    toggleStartStopBtn();
+    switchStartStopEventListeners();
     setStartStopBtnToStop();
     toggleLapResetBtn();
+    lapEventListener();
     clearInterval(interval);
     interval = setInterval(startCounting, 10);
 }
@@ -70,16 +75,17 @@ function setStartStopBtnToStop(){
     togglerStartStop = !togglerStartStop;
 }
 
-function toggleStartStopBtn(){
+function switchStartStopEventListeners(){
     if(togglerStartStop === false) {
         startStopBtn.removeEventListener('click', startTimer);
         startStopBtn.addEventListener('click', stopTimer);
-        return this;
+        // return this;
     };
     if(togglerStartStop === true) {
         startCounting();
         setStartStopBtnToStart();
-        return this;
+        console.log(this)
+        // return this;
     };
 }
 // --------------------------- //
@@ -97,16 +103,36 @@ function activateLapBtn(){
 function setResetButton(){
     resetBtnBorder.firstElementChild.innerHTML = 'Reset';
     togglerLapReset = !togglerLapReset;
+    console.log(this) 
 }
 
 function toggleLapResetBtn(){
     if(togglerLapReset === false) {
         activateLapBtn();
-        return this;
+        console.log(this)
+        return this; // NEEDED TO WORK
     };
     if(togglerLapReset === true){
         setResetButton();
-        return this;
+        console.log(this)
+        // return this;
+    };
+}
+// --------------------------- //
+
+// RENDERING LAPS //
+function lapEventListener(){
+    resetBtnBorder.addEventListener('click', () => console.log('Hello'))
+}
+
+function renderLap(lapMiliSec, lapSec, lapMin){
+    let lapNumber = 0; 
+    if(lapNumber < 6){
+        const html = `
+        <p class="lap">Lap ${minLapLists}</p><p class="lapTime">${lapMin}:${lapSec}.${lapMiliSec}</p>
+        `;
+        defaultLapList[lapNumber].insertAdjacentHTML = html;
+        lapNumber++;
     }
 }
 // --------------------------- //
