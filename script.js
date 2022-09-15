@@ -1,4 +1,4 @@
-// SELECTING NECESSARY ELEMENTS
+// SELECTING/DECLARING NECESSARY ELEMENTS
 let outputMinutes = document.getElementById('minutes');
 let outputSeconds = document.getElementById('seconds');
 let outputMiliSeconds = document.getElementById('miliSeconds');
@@ -12,8 +12,6 @@ let lapMin;
 let lapSec;
 let lapMiliSec;
 let firstLapHTML = '';
-
-// DECLARING NECESSARY ELEMENTS
 let miliSeconds = 0;
 let seconds = 0;
 let minutes = 0;
@@ -25,12 +23,11 @@ let togglerLapReset = false;
 // STARTING EVENT LISTENERS
 startStopBtn.addEventListener('click', startTimer);
 
-// LOADERS
+// LOADERS (NEEDED BCS I CANT SELECT SOMETHING THAT STILL DOESNT EXIST)
 function loadFirstLapHTML(){
     lapMin = document.getElementsByClassName('lapMin')[0];
     lapSec = document.getElementsByClassName('lapSec')[0];
     lapMiliSec = document.getElementsByClassName('lapMiliSec')[0];
-    return lapMin, lapSec, lapMiliSec;
 }
 
 // STARTING AND STOPPING TIMER
@@ -39,9 +36,10 @@ function startTimer(){
         firstLapHTML = `
             <p class="lap">Lap 1</p><p class="lapTime"><span class="lapMin"></span>:<span class="lapSec"></span>.<span class="lapMiliSec"></span></p>
         `;
-        defaultLapList[0].insertAdjacentHTML('afterbegin', firstLapHTML);
+        defaultLapList[0].insertAdjacentHTML('afterbegin', firstLapHTML); // 2 PARAMETERS FOR THIS, FIRST IS WHERE IM PUTTING THE HTML, SECOND IS WHAT IM PUTTING
         loadFirstLapHTML();
     }
+    // SETTING LAP TIME BCS HTML IS CREATED EMPTY
     lapMin.innerHTML = '00';
     lapSec.innerHTML = '00';
     lapMiliSec.innerHTML = '00';
@@ -61,7 +59,7 @@ function stopTimer(){
     setResetButton();
 }
 
-function startCounting() {
+function startCounting() { // NEEDS FIXING, STOP FIRST LAP
     loadFirstLapHTML();
     miliSeconds++;
     if(miliSeconds <= 9) {
@@ -121,7 +119,6 @@ function switchStartStopEventListeners(){
     if(togglerStartStop === true) {
         startCounting();
         setStartStopBtnToStart();
-        console.log(this)
         // return this;
     };
 }
@@ -140,18 +137,17 @@ function activateLapBtn(){
 function setResetButton(){
     resetBtnBorder.firstElementChild.innerHTML = 'Reset';
     togglerLapReset = !togglerLapReset;
-    console.log(this) 
+    resetBtnBorder.removeEventListener('click', renderLap);
+    resetBtnBorder.addEventListener('click', resetTimer);
 }
 
 function toggleLapResetBtn(){
     if(togglerLapReset === false) {
         activateLapBtn();
-        console.log(this)
-        return this; // NEEDED TO WORK
+        return this; // NEEDED TO WORK. NOT SURE WHY BECAUSE ITS NOT NEEDED IN OTHER PARTS AND IM NOT CHAINING METHODS
     };
     if(togglerLapReset === true){
         setResetButton();
-        console.log(this)
         // return this;
     };
 }
@@ -171,8 +167,24 @@ function renderLap(){
         <p class="lap">Lap ${lapNumber}</p><p class="lapTime">${lapTime[2]}:${lapTime[1]}.${lapTime[0]}</p>
         `;
         defaultLapList[lapNumber - 1].insertAdjacentHTML('afterbegin', html);
-        console.log(lapNumber)
         return lapNumber++;
     };
 }
 // --------------------------- //
+
+// RESET TIMER //
+function resetTimer(){
+    console.log('HELOO')
+    miliSeconds = 0;
+    seconds = 0;
+    minutes = 0;
+    outputMiliSeconds.innerHTML = '00';
+    outputMinutes.innerHTML = '00';
+    outputSeconds.innerHTML = '00';
+    toggleLapResetBtn();
+    html = '';
+    [...defaultLapList].forEach(li => li.innerHTML = ''); // SPREAD OPERATOR TO CONVERT HTML COLLECTION TO ARRAY THAT WE CAN APPLY THE FOREACH METHOD TO, AND THEN EMPTYING THE INNERHTML OF EVERY ELEMENT OF THE ARRAY (DESTRUCTURING)
+    firstLapHTML = '';
+
+}
+// ---------------------------- //
