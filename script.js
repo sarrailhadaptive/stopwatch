@@ -2,6 +2,7 @@
 let outputMinutes = document.getElementById('minutes');
 let outputSeconds = document.getElementById('seconds');
 let outputMiliSeconds = document.getElementById('miliSeconds');
+let lapNumber = 0; 
 const startStopBtn = document.getElementsByClassName('startBtnBorder')[0];
 const resetLapBtn = document.getElementsByClassName('resetLapBtn')[0];
 const resetBtnBorder = document.getElementsByClassName('resetBtnBorder')[0];
@@ -120,19 +121,22 @@ function toggleLapResetBtn(){
 }
 // --------------------------- //
 
-// RENDERING LAPS //
+// RENDERING LAPS // IN PROGRESS
 function lapEventListener(){
-    resetBtnBorder.addEventListener('click', () => console.log('Hello'))
+    resetBtnBorder.addEventListener('click', renderLap)
 }
 
-function renderLap(lapMiliSec, lapSec, lapMin){
-    let lapNumber = 0; 
+function renderLap(){
+    let html = '';
+    let lapTime = [outputMiliSeconds.innerHTML, outputSeconds.innerHTML, outputMinutes.innerHTML];
+    console.log(lapTime);
     if(lapNumber < 6){
-        const html = `
-        <p class="lap">Lap ${minLapLists}</p><p class="lapTime">${lapMin}:${lapSec}.${lapMiliSec}</p>
+        html += `
+        <p class="lap">Lap ${lapNumber}</p><p class="lapTime">${lapTime[2]}:${lapTime[1]}.${lapTime[0]}</p>
         `;
-        defaultLapList[lapNumber].insertAdjacentHTML = html;
-        lapNumber++;
-    }
+        defaultLapList[lapNumber].insertAdjacentHTML('afterbegin', html);
+        console.log(lapNumber)
+        return lapNumber++;
+    };
 }
 // --------------------------- //
