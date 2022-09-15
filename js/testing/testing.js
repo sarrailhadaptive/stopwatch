@@ -1,4 +1,4 @@
-// SELECTING/DECLARING NECESSARY ELEMENTS
+// SELECTING/DECLARING NECESSARY ELEMENTS // SHOULD I MAKE THIS A LOADER FUNCTION AND ADD IT TO BOTH THE BEGINING AND RESET FUNCTION?
 let outputMinutes = document.getElementById('minutes');
 let outputSeconds = document.getElementById('seconds');
 let outputMiliSeconds = document.getElementById('miliSeconds');
@@ -148,7 +148,7 @@ function toggleLapResetBtn(){
     };
     if(togglerLapReset === true){
         setResetButton();
-        // return this;
+        return this;
     };
 }
 // --------------------------- //
@@ -174,7 +174,8 @@ function renderLap(){
 
 // RESET TIMER //
 function resetTimer(){
-    console.log('HELOO')
+    clearInterval(interval); // WORKS FINE WITHOUT DOING THIS BUT I THINK IT SHOULD BE NECESSARY? NEED TO LEARN MORE ABOUT THIS
+    // PUTTING EVERYTHING BACK TO 0;
     miliSeconds = 0;
     seconds = 0;
     minutes = 0;
@@ -185,6 +186,7 @@ function resetTimer(){
     html = '';
     [...defaultLapList].forEach(li => li.innerHTML = ''); // SPREAD OPERATOR TO CONVERT HTML COLLECTION TO ARRAY THAT WE CAN APPLY THE FOREACH METHOD TO, AND THEN EMPTYING THE INNERHTML OF EVERY ELEMENT OF THE ARRAY (DESTRUCTURING)
     firstLapHTML = '';
-
+    togglerLapReset = false;
+    togglerStartStop = false;
 }
 // ---------------------------- //

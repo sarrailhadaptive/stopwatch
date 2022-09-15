@@ -95,6 +95,7 @@ COLORS
 }
 
 .resetBtnBorder {
+    opacity: 0.5;
     background-color: #2C2C2E;
     height: 59px;
     width: 59px;
