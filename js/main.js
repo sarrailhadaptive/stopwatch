@@ -21,6 +21,7 @@ let interval;
 let togglerStartStop = false;
 let togglerLapReset = false;
 
+// STARTERS
 startStopButton.addEventListener("click", startTimer);
 let lapListStartingHTML = `
 <li class="defaultLap"></li>
@@ -33,6 +34,12 @@ defaultLapContainer.insertAdjacentHTML("afterbegin", lapListStartingHTML);
 
 // LOADERS / DRY FUNCTIONS
 function loadFirstLapHTML() {
+  if (firstLapHTML === "") {
+    firstLapHTML = `
+              <p class="lap">Lap 1</p><p class="lapTime"><span class="lapMinutes"></span>:<span class="lapSec"></span>.<span class="lapMiliSec"></span></p>
+          `;
+    defaultLapList[0].insertAdjacentHTML("afterbegin", firstLapHTML);
+  }
   lapMinutes = document.getElementsByClassName("lapMinutes")[0];
   lapSec = document.getElementsByClassName("lapSec")[0];
   lapMiliSec = document.getElementsByClassName("lapMiliSec")[0];
@@ -47,16 +54,13 @@ function resetOutputInnerHTML() {
   outputSeconds.innerHTML = "00";
 }
 
+function toggleLapResetButton() {
+  togglerLapReset === false ? activateLapButton() : setResetButton();
+}
+
 // STARTING AND STOPPING TIMER
 function startTimer() {
-  if (firstLapHTML === "") {
-    firstLapHTML = `
-            <p class="lap">Lap 1</p><p class="lapTime"><span class="lapMinutes"></span>:<span class="lapSec"></span>.<span class="lapMiliSec"></span></p>
-        `;
-    defaultLapList[0].insertAdjacentHTML("afterbegin", firstLapHTML);
-    loadFirstLapHTML();
-  }
-  resetOutputInnerHTML();
+  loadFirstLapHTML();
   switchStartStopEventListeners();
   setStartStopButtonToStop();
   toggleLapResetButton();
@@ -146,18 +150,19 @@ function activateLapButton() {
   resetButtonBorder.firstElementChild.setAttribute("style", "color: #FFFFFF");
   resetButtonBorder.firstElementChild.innerHTML = "Lap";
   togglerLapReset = !togglerLapReset;
+  resetButtonBorder.removeEventListener("click", resetTimer);
+  resetButtonBorder.addEventListener("click", renderLap);
+  console.log(togglerLapReset);
 }
 
 function setResetButton() {
   resetButtonBorder.firstElementChild.innerHTML = "Reset";
   togglerLapReset = !togglerLapReset;
+  console.log(togglerLapReset);
   resetButtonBorder.removeEventListener("click", renderLap);
   resetButtonBorder.addEventListener("click", resetTimer);
 }
 
-function toggleLapResetButton() {
-  togglerLapReset === false ? activateLapButton() : setResetButton();
-}
 // --------------------------- //
 
 // RENDERING LAPS // IN PROGRESS
@@ -193,13 +198,12 @@ function renderLap() {
 // RESET TIMER //
 function resetTimer() {
   resetButtonBorder.removeEventListener("click", resetTimer);
-  resetButtonBorder.addEventListener("click", renderLap);
+  resetButtonBorder.removeEventListener("click", renderLap);
   lapNumber = 2;
   miliSeconds = 0;
   seconds = 0;
   minutes = 0;
   resetOutputInnerHTML();
-  toggleLapResetButton();
   html = "";
   [...defaultLapList].forEach((el, i) => {
     i < 6 ? (el.innerHTML = "") : el.remove();
@@ -213,3 +217,11 @@ function resetTimer() {
   resetButtonBorder.firstElementChild.setAttribute("style", "color: #8D8D92");
 }
 // ---------------------------- //
+
+// FASTEST AND SLOWEST LAP LOGIC //
+// 1 : RESET NEXT LAP TIME TO 0
+// 2 : COMPARE PREVIOUS LAP AND ACTUAL LAP (ARRAY METHOD REDUCE??)
+// 3 : IF CURRENT LAP IS FASTER THAN ALL PREVIOUS LAPS THEN MAKE TEXT COLOR GREEN AND SAVE IN FASTESTLAP VARIABLE AND PRINT LAP IN VIEW
+// 4 : IF CURRENT LAP IS SLOWER THAN ALL PREVIOUS LAPS THEN MAKE TEXT COLOR RED AND SAVE IN SLOWESTLAP VARIABLE AND PRINT LAP IN VIEW
+// 5 : IF CURRENT LAP IS NOT FASTER OR SLOWER THAN ALL PREVIOUS LAPS THEN JUST PRINT LAP IN VIEW
+// -------------------------- //
