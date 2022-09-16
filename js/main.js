@@ -152,13 +152,11 @@ function activateLapButton() {
   togglerLapReset = !togglerLapReset;
   resetButtonBorder.removeEventListener("click", resetTimer);
   resetButtonBorder.addEventListener("click", renderLap);
-  console.log(togglerLapReset);
 }
 
 function setResetButton() {
   resetButtonBorder.firstElementChild.innerHTML = "Reset";
   togglerLapReset = !togglerLapReset;
-  console.log(togglerLapReset);
   resetButtonBorder.removeEventListener("click", renderLap);
   resetButtonBorder.addEventListener("click", resetTimer);
 }
@@ -219,9 +217,11 @@ function resetTimer() {
 // ---------------------------- //
 
 // FASTEST AND SLOWEST LAP LOGIC //
-// 1 : RESET NEXT LAP TIME TO 0
-// 2 : COMPARE PREVIOUS LAP AND ACTUAL LAP (ARRAY METHOD REDUCE??)
-// 3 : IF CURRENT LAP IS FASTER THAN ALL PREVIOUS LAPS THEN MAKE TEXT COLOR GREEN AND SAVE IN FASTESTLAP VARIABLE AND PRINT LAP IN VIEW
-// 4 : IF CURRENT LAP IS SLOWER THAN ALL PREVIOUS LAPS THEN MAKE TEXT COLOR RED AND SAVE IN SLOWESTLAP VARIABLE AND PRINT LAP IN VIEW
-// 5 : IF CURRENT LAP IS NOT FASTER OR SLOWER THAN ALL PREVIOUS LAPS THEN JUST PRINT LAP IN VIEW
+function compareLapSpeed() {
+  // 1 : RESET NEXT LAP TIME TO 0
+  // 2 : COMPARE PREVIOUS LAP AND ACTUAL LAP (ARRAY METHOD REDUCE??)
+  // 3 : IF CURRENT LAP IS FASTER THAN ALL PREVIOUS LAPS THEN MAKE TEXT COLOR GREEN AND SAVE IN FASTESTLAP VARIABLE AND PRINT LAP IN VIEW
+  // 4 : IF CURRENT LAP IS SLOWER THAN ALL PREVIOUS LAPS THEN MAKE TEXT COLOR RED AND SAVE IN SLOWESTLAP VARIABLE AND PRINT LAP IN VIEW
+  // 5 : IF CURRENT LAP IS NOT FASTER OR SLOWER THAN ALL PREVIOUS LAPS THEN JUST PRINT LAP IN VIEW
+}
 // -------------------------- //

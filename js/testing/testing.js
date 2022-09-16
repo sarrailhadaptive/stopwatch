@@ -1,3 +1,4 @@
+"use strict";
 // SELECTING/DECLARING NECESSARY ELEMENTS
 let outputMinutes = document.getElementById("minutes");
 let outputSeconds = document.getElementById("seconds");
@@ -40,9 +41,14 @@ function loadFirstLapHTML() {
           `;
     defaultLapList[0].insertAdjacentHTML("afterbegin", firstLapHTML);
   }
-  lapMinutes = document.getElementsByClassName("lapMinutes")[0];
-  lapSec = document.getElementsByClassName("lapSec")[0];
-  lapMiliSec = document.getElementsByClassName("lapMiliSec")[0];
+  let lapTimeOfFirstDefaultLap =
+    document.getElementsByClassName("defaultLap")[0].lastElementChild;
+  lapMinutes = lapTimeOfFirstDefaultLap.firstElementChild;
+  lapSec = lapTimeOfFirstDefaultLap.firstElementChild.nextElementSibling;
+  lapMiliSec = lapTimeOfFirstDefaultLap.lastElementChild;
+  //   lapMinutes = document.getElementsByClassName("lapMinutes")[0];
+  //   lapSec = document.getElementsByClassName("lapSec")[0];
+  //   lapMiliSec = document.getElementsByClassName("lapMiliSec")[0];
   lapMinutes.innerHTML = "00";
   lapSec.innerHTML = "00";
   lapMiliSec.innerHTML = "00";
@@ -79,6 +85,9 @@ function stopTimer() {
 
 function startCounting() {
   // NEEDS FIXING, STOP FIRST LAP
+  lapTimeOfFirstDefaultLap = console.log(
+    document.getElementsByClassName("defaultLap")[0].lastElementChild
+  );
   miliSeconds++;
   if (miliSeconds <= 9) {
     outputMiliSeconds.innerHTML = "0" + miliSeconds;
