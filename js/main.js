@@ -22,6 +22,14 @@ let togglerStartStop = false;
 let togglerLapReset = false;
 
 startStopButton.addEventListener("click", startTimer);
+let lapListStartingHTML = `
+<li class="defaultLap"></li>
+<li class="defaultLap"></li>
+<li class="defaultLap"></li>
+<li class="defaultLap"></li>
+<li class="defaultLap"></li>
+<li class="defaultLap"></li>`;
+defaultLapContainer.insertAdjacentHTML("afterbegin", lapListStartingHTML);
 
 // LOADERS / DRY FUNCTIONS
 function loadFirstLapHTML() {
@@ -157,35 +165,7 @@ function lapEventListener() {
   resetButtonBorder.addEventListener("click", renderLap);
 }
 
-// function renderLap() {
-//   let html = "";
-//   let lapTime = [
-//     outputMiliSeconds.innerHTML,
-//     outputSeconds.innerHTML,
-//     outputMinutes.innerHTML,
-//   ];
-//   if (lapNumber <= 6) {
-//     html += `
-//           <p class="lap">Lap ${lapNumber}</p><p class="lapTime">${lapTime[2]}:${lapTime[1]}.${lapTime[0]}</p>
-//           `;
-//     defaultLapList[lapNumber - 1].insertAdjacentHTML("afterbegin", html);
-//     return lapNumber++;
-//   }
-//   if (lapNumber > 6) {
-//     lapNumber++;
-//     const listItemScrollBar = document.createElement("li");
-//     listItemScrollBar.setAttribute("class", "defaultLap");
-//     defaultLapContainer.insertAdjacentElement("beforeend", listItemScrollBar);
-//     html += `
-//       <p class="lap">Lap ${lapNumber - 1}</p><p class="lapTime">${lapTime[2]}:${
-//       lapTime[1]
-//     }.${lapTime[0]}</p>
-//       `;
-//     listItemScrollBar.insertAdjacentHTML("afterbegin", html);
-//   }
-// }
-
-// REFACTOR RENDER LAP FUNCTION
+// NEEDS REFACTORING
 function renderLap() {
   let html = "";
   let lapTime = [
@@ -193,25 +173,19 @@ function renderLap() {
     outputSeconds.innerHTML,
     outputMinutes.innerHTML,
   ];
-  if (lapNumber <= 6) {
-    html += `
-        <p class="lap">Lap ${lapNumber}</p><p class="lapTime">${lapTime[2]}:${lapTime[1]}.${lapTime[0]}</p>
-        `;
-    defaultLapList[lapNumber - 1].insertAdjacentHTML("afterbegin", html);
-    return lapNumber++;
-  }
-  if (lapNumber > 6) {
-    lapNumber++;
-    const listItemScrollBar = document.createElement("li");
-    listItemScrollBar.setAttribute("class", "defaultLap");
-    defaultLapContainer.insertAdjacentElement("beforeend", listItemScrollBar);
-    html += `
+  lapNumber++;
+  const listItemScrollBar = document.createElement("li");
+  listItemScrollBar.setAttribute("class", "defaultLap");
+  defaultLapContainer.insertAdjacentElement("afterbegin", listItemScrollBar);
+  html += `
     <p class="lap">Lap ${lapNumber - 1}</p><p class="lapTime">${lapTime[2]}:${
-      lapTime[1]
-    }.${lapTime[0]}</p>
+    lapTime[1]
+  }.${lapTime[0]}</p>
     `;
-    listItemScrollBar.insertAdjacentHTML("afterbegin", html);
-  }
+  listItemScrollBar.insertAdjacentHTML("afterbegin", html);
+  [...defaultLapList].forEach((el, i) => {
+    if (i > 5 && el.innerHTML === "") el.remove();
+  });
 }
 
 // --------------------------- //

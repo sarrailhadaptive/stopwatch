@@ -1,0 +1,227 @@
+/* FONTS */
+
+@font-face {
+  font-family: "SFProText";
+  src: url("./font/SFProText.ttf");
+}
+
+/* SCREEN VIEW */
+
+.main {
+  background-color: black;
+  width: 331px;
+  height: 409px;
+}
+
+/* CLOCK TOP LEFT CORNER */
+.clock {
+  position: absolute;
+  height: 18px;
+  left: 33px;
+  top: 17px;
+  font-family: "SF Pro Text";
+  font-style: normal;
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 18px;
+  display: flex;
+  align-items: center;
+  text-align: center;
+  color: #ffffff;
+}
+
+/* BATTERY */
+
+.battery {
+  position: absolute;
+  width: 18px;
+  height: 7.33px;
+  left: 302px;
+  top: 23px;
+  background-color: #ffffff;
+  border-radius: 1.33333px;
+}
+
+.batteryBorder {
+  box-sizing: border-box;
+  position: absolute;
+  width: 22px;
+  height: 11.33px;
+  left: 300px;
+  top: 21px;
+  mix-blend-mode: normal;
+  opacity: 0.35;
+  border: 1px solid #ffffff;
+  border-radius: 2.66667px;
+}
+
+.batteryCap {
+  position: absolute;
+  width: 1.33px;
+  height: 4px;
+  left: 323px;
+  top: 24.5px;
+  background: #ffffff;
+  mix-blend-mode: normal;
+  opacity: 0.4;
+}
+
+/* LAP SCROLLBAR */
+
+.lapScrollbarDiv {
+  background-color: black;
+  width: 331px;
+  height: 230px;
+}
+
+.listingLaps {
+  margin: 0 12px 0 12px;
+  padding-inline-start: 0;
+  border-top: solid 0.1px gray;
+  height: 100%;
+  overflow: auto;
+}
+
+.listingLaps li {
+  height: 34px;
+  color: #ffffff;
+  font-family: "SFProText";
+  font-size: 14px;
+  list-style-type: none;
+  border-bottom: solid 0.1px gray;
+}
+
+.listingLaps p {
+  width: 60px;
+  margin: 0;
+  padding-top: 9px;
+}
+
+.lap {
+  float: left;
+}
+
+.lapTime {
+  float: right;
+}
+
+/* NAVIGATION BAR BOTTOM */
+
+.navBarBottom {
+  background-color: #1c1c1e;
+  width: 331px;
+  height: 66px;
+}
+
+/* TIMER */
+
+.timer {
+  justify-content: center;
+  display: inline-flex;
+  font-family: "SFProText";
+  padding-top: 121px;
+  width: 331px;
+  height: 78px;
+  font-size: 65px;
+  text-align: center;
+  color: #ffffff;
+}
+
+.timer div {
+  padding-right: 3px;
+  width: 78px;
+  float: left;
+  font-weight: 10;
+}
+
+/* RESET/LAP START/STOP BUTTONS
+COLORS 
+ LAP ON HOVER AND RESET BACKGROUND #3A3A3C
+ LAP BEFORE START #2C2C2E
+*/
+.resetLapButton {
+  background-color: #2c2c2e;
+  border-radius: 36px;
+  width: 65px;
+  height: 65px;
+  position: absolute;
+  top: 340px;
+  left: 21px;
+}
+
+.resetButtonBorder {
+  opacity: 0.5;
+  background-color: #2c2c2e;
+  height: 59px;
+  width: 59px;
+  position: absolute;
+  top: 342px;
+  left: 23px;
+  border-radius: 36px;
+  border: solid 1px black;
+}
+
+.resetButtonBorder h4 {
+  padding-top: 3px;
+  text-align: center;
+  color: #8d8d92;
+  font-size: small;
+  font-family: "SFProText";
+}
+
+/* START AND STOP BUTTON
+COLORS
+ START TEXT #04DE71
+ START BACKGROUND #16472E
+ STOP TEXT #FF3B30
+ STOP BACKGROUND #50211F
+#16472e
+*/
+
+.startTimerButton {
+  background-color: #16472e;
+  border-radius: 36px;
+  width: 65px;
+  height: 65px;
+  position: absolute;
+  top: 340px;
+  left: 261px;
+}
+
+.startButtonBorder {
+  background-color: #16472e;
+  height: 59px;
+  width: 59px;
+  position: absolute;
+  top: 342px;
+  left: 263px;
+  border-radius: 36px;
+  border: solid 1px black;
+}
+
+.startButtonBorder h4 {
+  padding-top: 3px;
+  text-align: center;
+  color: #04de71;
+  font-size: small;
+  font-family: "SFProText";
+}
+
+#stopButtonBorder {
+  background-color: #50211f;
+  height: 59px;
+  width: 59px;
+  position: absolute;
+  top: 342px;
+  left: 263px;
+  border-radius: 36px;
+  border: solid 1px black;
+}
+
+#stopButtonBorder h4 {
+  padding-top: 3px;
+  text-align: center;
+  color: #ff3b30;
+  font-size: small;
+  font-family: "SFProText";
+}
