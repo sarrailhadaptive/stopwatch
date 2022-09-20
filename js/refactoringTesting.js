@@ -38,16 +38,18 @@ let newLapElementTable = "";
 let newLapElementBody = "";
 let lapNumber = 1;
 let count = 0;
+let previousCount = 0;
 let interval;
-let startCounter = 0;
+let startDateObjectCounter = 0;
 let currentCounter = 0;
-let previousLapTime = 0;
-let currentLapTime = 0;
+let totalLaps = [];
+let slowestLap = 0;
+let slowestLapIndex = 0;
+let fastestLap = Infinity;
+let fastestLapIndex = 0;
 // let requestAnimationFrame_ID;
 let isStartButtonSet = false;
 let isLapButtonSet = false;
-let isTheFastestLap = false;
-let isTheSlowestLap = false;
 
 // --------------------------------------------------------------------------------- //
 
@@ -98,7 +100,6 @@ loadDefaultLapTable();
 
 startStopButton.onclick = () => {
   clearInterval(interval);
-  startCounter = new Date();
   startStopwatch();
 };
 
@@ -113,10 +114,11 @@ startStopButton.onclick = () => {
 // setResetButtonStylesAndEvents(); ------------  DONE /
 // addLapToTable(); ----------------------------  DONE /
 // resetStopwatch(); ---------------------------  DONE /
-// compareLapsSpeed();
+// compareLapsSpeed(); -------------------------  DONE /
 
 const startStopwatch = () => {
   // 1: START COUNTING TIME
+  startDateObjectCounter = new Date();
   interval = setInterval(startCountingTime, 10);
   // 2: CREATE FIRST LAP
   loadFirstLapHTML();
@@ -133,6 +135,7 @@ const startStopwatch = () => {
 const stopStopwatchCounter = () => {
   // 1: STOP COUNTING TIME
   clearInterval(interval);
+  previousCount = count;
   // 2: CHANGE STOP BUTTON TO START BUTTON
   setStartButtonStylesAndEvents();
   // 3: CHANGE ONCLICK EVENT FROM START TO STOP
@@ -180,11 +183,11 @@ const setLapButtonStylesAndEvents = () => {
 
 // startStopwatch HELPER FUNCTIONS
 const startCountingTime = () => {
-  console.log(
-    `startCounter: ${+startCounter}  currentCounter: ${+currentCounter}  count: ${count}`
-  );
+  // console.log(
+  //   `startDateObjectCounter: ${+startDateObjectCounter}  currentCounter: ${+currentCounter}  count: ${count}`
+  // );
   currentCounter = new Date();
-  count = +currentCounter - +startCounter;
+  count = +currentCounter - +startDateObjectCounter + previousCount;
   mainTimerCounters.milliSeconds = count % 1000;
   mainTimerCounters.seconds = Math.floor(count / 1000) % 60;
   mainTimerCounters.minutes = Math.floor(count / 60000) % 60;
@@ -237,13 +240,13 @@ const loadFirstLapHTML = () => {
 
 const addNewLap = () => {
   // 1: CREATE NEW LAP ELEMENT
+  previousCount = 0;
   lapNumber++;
   newLapElementTable = document.createElement("table");
   newLapElementTable.classList.add("lap-container");
   newLapElementBody = document.createElement("tbody");
   // 2: SAVE PREVIOUS LAP TIMES
-  previousLapTime = count;
-  startCounter = new Date();
+  startDateObjectCounter = new Date();
   newLapHTML = `
   <tr>
     <td class="lap-number">Lap ${lapNumber}</td>
@@ -263,28 +266,47 @@ const addNewLap = () => {
   lapScrollbarDiv.insertAdjacentElement("afterbegin", newLapElementTable);
   newLapElementTable.insertAdjacentElement("afterbegin", newLapElementBody);
   newLapElementBody.insertAdjacentHTML("afterbegin", newLapHTML);
-  // 4: DELETE EMPTY TABLE ROWS
+  // 4: PUSH LAP INTO TOTALLAPS ARRAY
+  totalLaps.unshift(count);
+  // 5: DELETE EMPTY TABLE ROWS
   [...lapContainer].forEach((el, i) => {
     if (i > 5 && el.innerText === "") el.remove();
   });
-  // 4: SET LAP TO FASTEST OR SLOWEST
-  calculateCurrentLapTime();
-  if (previousLapTime > currentLapTime) console.log("fast");
+  // 6: SET LAP TO FASTEST OR SLOWEST
+  calculateLapTime();
 };
 
-const calculateCurrentLapTime = () => {
-  currentLapTime =
-    lapTimerCounters.milliSeconds +
-    (Math.floor(lapTimerCounters.seconds / 1000) % 60) +
-    (Math.floor(lapTimerCounters.minutes / 60000) % 60);
-  console.log(previousLapTime);
-  console.log(currentLapTime);
+// WORKS BUT ITS NOT EFFICIENT AT ALL
+const calculateLapTime = () => {
+  totalLaps.forEach((el, i) => {
+    if (el > slowestLap) {
+      [...lapTimeSelector].forEach((el) => {
+        el.parentElement.classList.remove("slowest-lap");
+      });
+      slowestLap = el;
+      slowestLapIndex = i;
+      lapTimeSelector[slowestLapIndex + 1].parentElement.classList.add(
+        "slowest-lap"
+      );
+    } else if (el < fastestLap) {
+      [...lapTimeSelector].forEach((el) => {
+        el.parentElement.classList.remove("fastest-lap");
+      });
+      fastestLap = el;
+      fastestLapIndex = i;
+      lapTimeSelector[fastestLapIndex + 1].parentElement.classList.add(
+        "fastest-lap"
+      );
+    }
+  });
 };
 
 const resetStopwatch = () => {
   lapNumber = 1;
-  startCounter = new Date();
+  startDateObjectCounter = null;
   currentCounter = 0;
+  count = 0;
+  previousCount = 0;
   clearInterval(interval);
   isStartButtonSet = false;
   isLapButtonSet = false;
@@ -295,7 +317,6 @@ const resetStopwatch = () => {
     el.innerText = "";
   });
   loadDefaultLapTable();
-  count = 0;
   defaultLapTableHTML = "";
   firstLapHTML = "";
   newLapHTML = "";
@@ -311,6 +332,9 @@ const resetStopwatch = () => {
     seconds: 0,
     milliSeconds: 0,
   };
+  totalLaps = [];
+  slowestLap = 0;
+  slowestLapIndex = 0;
 };
 
 // ------------------------------------------------------------ //

@@ -57,7 +57,6 @@
 }
 
 .lap-time {
-  font-weight: 300;
   height: 21px;
   color: #ffffff;
   font-size: 14px;
@@ -70,9 +69,16 @@
 }
 
 .lap-time div {
+  font-weight: 300;
   width: 17px;
 }
 
+.fastest-lap td {
+  color: #04de71;
+}
+.slowest-lap td {
+  color: #ff3b30;
+}
 /* NAVIGATION BAR BOTTOM */
 
 .navigation-bar-bottom {
