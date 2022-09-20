@@ -1,7 +1,12 @@
 // SELECTING/DECLARING NECESSARY ELEMENTS
-let outputMinutes = document.getElementById("minutes");
-let outputSeconds = document.getElementById("seconds");
-let outputMiliSeconds = document.getElementById("miliSeconds");
+const outputTimes = {
+  outputMinutes: document.getElementById("minutes"),
+  outputSeconds: document.getElementById("seconds"),
+  outputMilliSeconds: document.getElementById("milliSeconds"),
+};
+const outputMinutes = document.getElementById("minutes");
+const outputSeconds = document.getElementById("seconds");
+const outputMilliSeconds = document.getElementById("milliSeconds");
 let lapNumber = 2; // THIS MUST BE 2 BECAUSE THE FIRST LAP IS RENDERED AUTOMATICALLY
 const startStopButton = document.getElementsByClassName("startButtonBorder")[0];
 const resetLapButton = document.getElementsByClassName("resetLapButton")[0];
@@ -14,16 +19,20 @@ let lapMinutes;
 let lapSec;
 let lapMiliSec;
 let firstLapHTML = "";
-let miliSeconds = 0;
+let milliSeconds = 0;
 let seconds = 0;
 let minutes = 0;
 let interval;
 let togglerStartStop = false;
 let togglerLapReset = false;
+// ADD STATE CONTROL
+// DONT USE THE DOM FOR STATE CONTROL
+// SEPARATE LOGIC FROM DISPLAY
+// FIND BETTER WAYS THAN ADDING UP MILLISECONDS
 
 // STARTERS
 startStopButton.addEventListener("click", startTimer);
-let lapListStartingHTML = `
+const lapListStartingHTML = `
 <li class="defaultLap"></li>
 <li class="defaultLap"></li>
 <li class="defaultLap"></li>
@@ -43,15 +52,15 @@ function loadFirstLapHTML() {
   lapMinutes = document.getElementsByClassName("lapMinutes")[0];
   lapSec = document.getElementsByClassName("lapSec")[0];
   lapMiliSec = document.getElementsByClassName("lapMiliSec")[0];
-  lapMinutes.innerHTML = "00";
-  lapSec.innerHTML = "00";
-  lapMiliSec.innerHTML = "00";
+  lapMinutes.innerText = "00";
+  lapSec.innerText = "00";
+  lapMiliSec.innerText = "00";
 }
 
-function resetOutputInnerHTML() {
-  outputMiliSeconds.innerHTML = "00";
-  outputMinutes.innerHTML = "00";
-  outputSeconds.innerHTML = "00";
+function resetOutputinnerText() {
+  outputMilliSeconds.innerText = "00";
+  outputMinutes.innerText = "00";
+  outputSeconds.innerText = "00";
 }
 
 function toggleLapResetButton() {
@@ -60,53 +69,53 @@ function toggleLapResetButton() {
 
 // STARTING AND STOPPING TIMER
 function startTimer() {
+  clearInterval(interval);
+  interval = setInterval(startCounting, 10);
   loadFirstLapHTML();
   switchStartStopEventListeners();
   setStartStopButtonToStop();
   toggleLapResetButton();
   lapEventListener();
-  clearInterval(interval);
-  interval = setInterval(startCounting, 10);
 }
 
 function stopTimer() {
   clearInterval(interval);
-  startStopButton.removeEventListener("click", stopTimer);
+  startStopButton.removeEventListener("click", stopTimer); // .ONCLICK
   startStopButton.addEventListener("click", startTimer);
   setStartStopButtonToStart();
   setResetButton();
 }
 
 function startCounting() {
-  // NEEDS FIXING, STOP FIRST LAP
-  miliSeconds++;
-  if (miliSeconds <= 9) {
-    outputMiliSeconds.innerHTML = "0" + miliSeconds;
-    lapMiliSec.innerHTML = "0" + miliSeconds;
+  // NEEDS FIXING, STOP FIRST LAP / JAVASCRIPT IN BUILT SUPPORT
+  milliSeconds++;
+  if (milliSeconds <= 9) {
+    outputMilliSeconds.innerText = `0${milliSeconds}`; // USE INNERTEXT / CHANGE THIS EVERYWHERE
+    lapMiliSec.innerText = "0" + milliSeconds;
   }
-  if (miliSeconds > 9) {
-    outputMiliSeconds.innerHTML = miliSeconds;
-    lapMiliSec.innerHTML = miliSeconds;
+  if (milliSeconds > 9) {
+    outputMilliSeconds.innerText = milliSeconds;
+    lapMiliSec.innerText = milliSeconds;
   }
-  if (miliSeconds > 59) {
+  if (milliSeconds > 100) {
     seconds++;
-    outputSeconds.innerHTML = "0" + seconds;
-    lapSec.innerHTML = "0" + seconds;
-    miliSeconds = 0;
-    outputMiliSeconds.innerHTML = "0" + miliSeconds;
-    lapMiliSec.innerHTML = "0" + miliSeconds;
+    outputSeconds.innerText = "0" + seconds;
+    lapSec.innerText = "0" + seconds;
+    milliSeconds = 0;
+    outputMilliSeconds.innerText = "0" + milliSeconds;
+    lapMiliSec.innerText = "0" + milliSeconds;
   }
   if (seconds > 9) {
-    outputSeconds.innerHTML = seconds;
-    lapSec.innerHTML = seconds;
+    outputSeconds.innerText = seconds;
+    lapSec.innerText = seconds;
   }
   if (seconds > 59) {
     minutes++;
-    outputMinutes.innerHTML = "0" + minutes;
-    lapMinutes.innerHTML = "0" + minutes;
+    outputMinutes.innerText = "0" + minutes;
+    lapMinutes.innerText = "0" + minutes;
     seconds = 0;
-    outputSeconds.innerHTML = "0" + seconds;
-    lapSec.innerHTML = "0" + seconds;
+    outputSeconds.innerText = "0" + seconds;
+    lapSec.innerText = "0" + seconds;
   }
 }
 // ------------------------ //
@@ -129,15 +138,13 @@ function setStartStopButtonToStop() {
 }
 
 function switchStartStopEventListeners() {
-  if (togglerStartStop === false) {
+  if (!togglerStartStop) {
     startStopButton.removeEventListener("click", startTimer);
     startStopButton.addEventListener("click", stopTimer);
-    // return this;
   }
-  if (togglerStartStop === true) {
+  if (togglerStartStop) {
     startCounting();
     setStartStopButtonToStart();
-    // return this;
   }
 }
 // --------------------------- //
@@ -148,14 +155,14 @@ function activateLapButton() {
   resetButtonBorder.setAttribute("style", "opacity: unset");
   resetLapButton.setAttribute("style", "background-color: #3A3A3C");
   resetButtonBorder.firstElementChild.setAttribute("style", "color: #FFFFFF");
-  resetButtonBorder.firstElementChild.innerHTML = "Lap";
+  resetButtonBorder.firstElementChild.innerText = "Lap";
   togglerLapReset = !togglerLapReset;
   resetButtonBorder.removeEventListener("click", resetTimer);
   resetButtonBorder.addEventListener("click", renderLap);
 }
 
 function setResetButton() {
-  resetButtonBorder.firstElementChild.innerHTML = "Reset";
+  resetButtonBorder.firstElementChild.innerText = "Reset";
   togglerLapReset = !togglerLapReset;
   resetButtonBorder.removeEventListener("click", renderLap);
   resetButtonBorder.addEventListener("click", resetTimer);
@@ -170,11 +177,15 @@ function lapEventListener() {
 
 // NEEDS REFACTORING
 function renderLap() {
+  lapMinutes = document.getElementsByClassName("lapMinutes")[lapNumber - 1];
+  lapSec = document.getElementsByClassName("lapSec")[lapNumber - 1];
+  lapMiliSec = document.getElementsByClassName("lapMiliSec")[lapNumber - 1];
+  console.log(document.getElementsByClassName("listingLaps"));
   let html = "";
   let lapTime = [
-    outputMiliSeconds.innerHTML,
-    outputSeconds.innerHTML,
-    outputMinutes.innerHTML,
+    outputMilliSeconds.innerText,
+    outputSeconds.innerText,
+    outputMinutes.innerText,
   ];
   lapNumber++;
   const listItemScrollBar = document.createElement("li");
@@ -187,7 +198,7 @@ function renderLap() {
     `;
   listItemScrollBar.insertAdjacentHTML("afterbegin", html);
   [...defaultLapList].forEach((el, i) => {
-    if (i > 5 && el.innerHTML === "") el.remove();
+    if (i > 5 && el.innerText === "") el.remove();
   });
 }
 
@@ -198,13 +209,13 @@ function resetTimer() {
   resetButtonBorder.removeEventListener("click", resetTimer);
   resetButtonBorder.removeEventListener("click", renderLap);
   lapNumber = 2;
-  miliSeconds = 0;
+  milliSeconds = 0;
   seconds = 0;
   minutes = 0;
-  resetOutputInnerHTML();
+  resetOutputinnerText();
   html = "";
   [...defaultLapList].forEach((el, i) => {
-    i < 6 ? (el.innerHTML = "") : el.remove();
+    i < 6 ? (el.innerText = "") : el.remove();
   });
   firstLapHTML = "";
   togglerLapReset = false;
