@@ -174,7 +174,6 @@ const setLapButtonStylesAndEvents = () => {
   resetLapButton.firstElementChild.innerText = "Lap";
   resetLapButton.classList.remove("reset-lap-button");
   resetLapButton.classList.add("set-lap-button");
-
   resetLapButton.onclick = () => {
     addNewLap();
   };
@@ -182,46 +181,20 @@ const setLapButtonStylesAndEvents = () => {
 // ------------------------------------------------------------ //
 
 // startStopwatch HELPER FUNCTIONS
+const getFormattedTime = () => {
+  currentCounter = new Date();
+  count = +currentCounter - +startDateObjectCounter + previousCount;
+  mainTimerCounters.milliSeconds = Math.floor(count % 1000);
+  mainTimerCounters.seconds = Math.floor(count / 1000) % 60;
+  mainTimerCounters.minutes = Math.floor(count / 60000) % 60;
+};
+
 const startCountingTime = () => {
   // console.log(
   //   `startDateObjectCounter: ${+startDateObjectCounter}  currentCounter: ${+currentCounter}  count: ${count}`
   // );
-  currentCounter = new Date();
-  count = +currentCounter - +startDateObjectCounter + previousCount;
-  mainTimerCounters.milliSeconds = count % 1000;
-  mainTimerCounters.seconds = Math.floor(count / 1000) % 60;
-  mainTimerCounters.minutes = Math.floor(count / 60000) % 60;
-  if (mainTimerCounters.milliSeconds < 9) {
-    mainTimerOutputs.outputMilliSeconds.innerText = `0${
-      mainTimerCounters.milliSeconds / 10
-    }`;
-    lapTimeSelector[0].lastElementChild.innerText = `0${
-      mainTimerCounters.milliSeconds / 10
-    }`;
-  }
-  if (mainTimerCounters.milliSeconds > 9) {
-    mainTimerOutputs.outputMilliSeconds.innerText =
-      mainTimerCounters.milliSeconds.toString().slice(0, -1);
-    lapTimeSelector[0].lastElementChild.innerText =
-      mainTimerCounters.milliSeconds.toString().slice(0, -1);
-  }
-  if (mainTimerCounters.seconds < 9) {
-    mainTimerOutputs.outputSeconds.innerText = `0${mainTimerCounters.seconds}`;
-    lapTimeSelector[0].firstElementChild.nextElementSibling.innerText = `0${mainTimerCounters.seconds}`;
-  }
-  if (mainTimerCounters.seconds > 9 && mainTimerCounters.seconds < 59) {
-    mainTimerOutputs.outputSeconds.innerText = mainTimerCounters.seconds;
-    lapTimeSelector[0].firstElementChild.nextElementSibling.innerText =
-      mainTimerCounters.seconds;
-  }
-  if (mainTimerCounters.minutes < 9) {
-    mainTimerOutputs.outputMinutes.innerText = `0${mainTimerCounters.minutes}`;
-    lapTimeSelector[0].firstElementChild.innerText = `0${mainTimerCounters.minutes}`;
-  }
-  if (mainTimerCounters.minutes > 9) {
-    mainTimerCounters.outputMinutes.innerText = mainTimerCounters.minutes;
-    lapTimeSelector[0].firstElementChild.innerText = mainTimerCounters.minutes;
-  }
+  getFormattedTime();
+  displayTimeOnMainTimerAndFirstLap();
 };
 
 const loadFirstLapHTML = () => {
@@ -301,6 +274,36 @@ const calculateLapTime = () => {
   });
 };
 
+const displayTimeOnMainTimerAndFirstLap = () => {
+  if (mainTimerCounters.milliSeconds < 9) {
+    mainTimerOutputs.outputMilliSeconds.innerText = `0${mainTimerCounters.milliSeconds}`;
+    lapTimeSelector[0].lastElementChild.innerText = `0${mainTimerCounters.milliSeconds}`;
+  }
+  if (mainTimerCounters.milliSeconds > 9) {
+    mainTimerOutputs.outputMilliSeconds.innerText =
+      mainTimerCounters.milliSeconds.toString().slice(0, -1);
+    lapTimeSelector[0].lastElementChild.innerText =
+      mainTimerCounters.milliSeconds.toString().slice(0, -1);
+  }
+  if (mainTimerCounters.seconds < 9) {
+    mainTimerOutputs.outputSeconds.innerText = `0${mainTimerCounters.seconds}`;
+    lapTimeSelector[0].firstElementChild.nextElementSibling.innerText = `0${mainTimerCounters.seconds}`;
+  }
+  if (mainTimerCounters.seconds > 9 && mainTimerCounters.seconds < 59) {
+    mainTimerOutputs.outputSeconds.innerText = mainTimerCounters.seconds;
+    lapTimeSelector[0].firstElementChild.nextElementSibling.innerText =
+      mainTimerCounters.seconds;
+  }
+  if (mainTimerCounters.minutes < 9) {
+    mainTimerOutputs.outputMinutes.innerText = `0${mainTimerCounters.minutes}`;
+    lapTimeSelector[0].firstElementChild.innerText = `0${mainTimerCounters.minutes}`;
+  }
+  if (mainTimerCounters.minutes > 9) {
+    mainTimerCounters.outputMinutes.innerText = mainTimerCounters.minutes;
+    lapTimeSelector[0].firstElementChild.innerText = mainTimerCounters.minutes;
+  }
+};
+
 const resetStopwatch = () => {
   lapNumber = 1;
   startDateObjectCounter = null;
@@ -335,6 +338,11 @@ const resetStopwatch = () => {
   totalLaps = [];
   slowestLap = 0;
   slowestLapIndex = 0;
+  fastestLap = Infinity;
+  fastestLapIndex = 0;
+  resetLapButton.classList.remove("set-lap-button");
+  resetLapButton.classList.add("reset-lap-button");
+  resetLapButton.firstElementChild.innerText = "Lap";
 };
 
 // ------------------------------------------------------------ //
@@ -369,21 +377,3 @@ const resetStopwatch = () => {
 //   }
 // };
 // requestAnimationFrame_ID = requestAnimationFrame(requestAnimationFrameCallback);
-
-// NO IDEA WHAT I WAS TRYING TO DO HERE
-// const renderLapTimes = () => {
-//   if (lapTimerCounters.milliSeconds < 9)
-//     lapTimeSelector[1].lastElementChild.innerText = `0${lapTimerCounters.milliSeconds}`;
-//   if (lapTimerCounters.milliSeconds > 9)
-//     lapTimeSelector[1].lastElementChild.innerText =
-//       lapTimerCounters.milliSeconds;
-//   if (lapTimerCounters.seconds < 9)
-//     lapTimeSelector[1].firstElementChild.nextSibling.innerText = `0${lapTimerCounters.seconds}`;
-//   if (lapTimerCounters.seconds > 9)
-//     lapTimeSelector[1].firstElementChild.nextSibling.innerText =
-//       lapTimerCounters.seconds;
-//   if (lapTimerCounters.minutes < 9)
-//     lapTimeSelector[1].firstElementChild.innerText = `0${lapTimerCounters.minutes}`;
-//   if (lapTimerCounters.minutes > 9)
-//     lapTimeSelector[1].firstElementChild.innerText = lapTimerCounters.minutes;
-// };
