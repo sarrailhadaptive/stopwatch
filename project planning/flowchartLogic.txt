@@ -1,2 +1,0 @@
-How does a stopwatch app actually works?
-What features do I need?
