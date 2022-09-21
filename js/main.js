@@ -1,238 +1,379 @@
-// SELECTING/DECLARING NECESSARY ELEMENTS
-const outputTimes = {
-  outputMinutes: document.getElementById("minutes"),
-  outputSeconds: document.getElementById("seconds"),
-  outputMilliSeconds: document.getElementById("milliSeconds"),
+"use strict";
+// GLOBAL SELECTORS
+// HTML ELEMENTS
+const lapScrollbarDiv = document.getElementsByClassName("lap-scrollbar-div")[0];
+const mainTimerOutputs = {
+  outputMinutes: document.getElementById("timer-minutes"),
+  outputSeconds: document.getElementById("timer-seconds"),
+  outputMilliSeconds: document.getElementById("timer-milli-seconds"),
 };
-const outputMinutes = document.getElementById("minutes");
-const outputSeconds = document.getElementById("seconds");
-const outputMilliSeconds = document.getElementById("milliSeconds");
-let lapNumber = 2; // THIS MUST BE 2 BECAUSE THE FIRST LAP IS RENDERED AUTOMATICALLY
-const startStopButton = document.getElementsByClassName("startButtonBorder")[0];
-const resetLapButton = document.getElementsByClassName("resetLapButton")[0];
-const resetButtonBorder =
-  document.getElementsByClassName("resetButtonBorder")[0];
-const startTimerButton = document.getElementsByClassName("startTimerButton")[0];
-const defaultLapList = document.getElementsByClassName("defaultLap");
-const defaultLapContainer = document.getElementsByClassName("listingLaps")[0];
-let lapMinutes;
-let lapSec;
-let lapMiliSec;
+const startStopButton = document.getElementsByClassName("start-stop-button")[0];
+const resetLapButton = document.getElementsByClassName("reset-lap-button")[0];
+const resetTimerButton = document.getElementsByClassName(
+  "reset-lap-button-container"
+)[0];
+const startTimerButton = document.getElementsByClassName(
+  "start-stop-button-container"
+)[0];
+const lapContainer = document.getElementsByClassName("lap-container");
+const lapTableBodySelector = document.getElementsByTagName("table");
+const lapNumberSelector = document.getElementsByClassName("lap-number");
+const lapTimeSelector = document.getElementsByClassName("lap-time");
+// -------------------------------------------------------------------------------- //
+// FUNCTION VARIABLES
+let mainTimerCounters = {
+  minutes: 0,
+  seconds: 0,
+  milliSeconds: 0,
+};
+let lapTimerCounters = {
+  minutes: 0,
+  seconds: 0,
+  milliSeconds: 0,
+};
+let defaultLapTableHTML = "";
 let firstLapHTML = "";
-let milliSeconds = 0;
-let seconds = 0;
-let minutes = 0;
+let newLapHTML = "";
+let newLapElementTable = "";
+let newLapElementBody = "";
+let lapNumber = 1;
+let count = 0;
+let previousCount = 0;
 let interval;
-let togglerStartStop = false;
-let togglerLapReset = false;
-// ADD STATE CONTROL
-// DONT USE THE DOM FOR STATE CONTROL
-// SEPARATE LOGIC FROM DISPLAY
-// FIND BETTER WAYS THAN ADDING UP MILLISECONDS
+let startDateObjectCounter = 0;
+let currentCounter = 0;
+let totalLaps = [];
+let slowestLap = 0;
+let slowestLapIndex = 0;
+let fastestLap = Infinity;
+let fastestLapIndex = 0;
+// let requestAnimationFrame_ID;
+let isStartButtonSet = false;
+let isLapButtonSet = false;
 
-// STARTERS
-startStopButton.addEventListener("click", startTimer);
-const lapListStartingHTML = `
-<li class="defaultLap"></li>
-<li class="defaultLap"></li>
-<li class="defaultLap"></li>
-<li class="defaultLap"></li>
-<li class="defaultLap"></li>
-<li class="defaultLap"></li>`;
-defaultLapContainer.insertAdjacentHTML("afterbegin", lapListStartingHTML);
+// --------------------------------------------------------------------------------- //
 
-// LOADERS / DRY FUNCTIONS
-function loadFirstLapHTML() {
-  if (firstLapHTML === "") {
-    firstLapHTML = `
-              <p class="lap">Lap 1</p><p class="lapTime"><span class="lapMinutes"></span>:<span class="lapSec"></span>.<span class="lapMiliSec"></span></p>
-          `;
-    defaultLapList[0].insertAdjacentHTML("afterbegin", firstLapHTML);
-  }
-  lapMinutes = document.getElementsByClassName("lapMinutes")[0];
-  lapSec = document.getElementsByClassName("lapSec")[0];
-  lapMiliSec = document.getElementsByClassName("lapMiliSec")[0];
-  lapMinutes.innerText = "00";
-  lapSec.innerText = "00";
-  lapMiliSec.innerText = "00";
-}
+// STARTER FUNCTIONS
+const loadDefaultLapTable = () => {
+  defaultLapTableHTML = `
+  <table class="lap-container">
+        <tr>
+          <td class="lap-number"></td>
+          <td class="lap-time"></td>
+        </tr>
+      </table>
+      <table class="lap-container">
+        <tr>
+          <td class="lap-number"></td>
+          <td class="lap-time"></td>
+        </tr>
+      </table>
+      <table class="lap-container">
+        <tr>
+          <td class="lap-number"></td>
+          <td class="lap-time"></td>
+        </tr>
+      </table>
+      <table class="lap-container">
+        <tr>
+          <td class="lap-number"></td>
+          <td class="lap-time"></td>
+        </tr>
+      </table>
+      <table class="lap-container">
+        <tr>
+          <td class="lap-number"></td>
+          <td class="lap-time"></td>
+        </tr>
+      </table>
+      <table class="lap-container">
+        <tr>
+          <td class="lap-number"></td>
+          <td class="lap-time"></td>
+        </tr>
+      </table>
+      `;
+  lapScrollbarDiv.insertAdjacentHTML("afterbegin", defaultLapTableHTML);
+};
 
-function resetOutputinnerText() {
-  outputMilliSeconds.innerText = "00";
-  outputMinutes.innerText = "00";
-  outputSeconds.innerText = "00";
-}
+loadDefaultLapTable();
 
-function toggleLapResetButton() {
-  togglerLapReset === false ? activateLapButton() : setResetButton();
-}
-
-// STARTING AND STOPPING TIMER
-function startTimer() {
+startStopButton.onclick = () => {
   clearInterval(interval);
-  interval = setInterval(startCounting, 10);
+  startStopwatch();
+};
+
+// FUNCTIONS THAT WE WILL (MOST LIKELY) NEED IN THIS APP
+// startStopwatch(); ---------------------------  DONE /
+// startCountingTime(); ------------------------  DONE /
+// loadFirstLap(); -----------------------------  DONE /
+// stopStopwatchCounter(); ---------------------  DONE /
+// setStartButtonStylesAndEvents(); ------------  DONE /
+// setStopButtonStylesAndEvents(); -------------  DONE /
+// setLapButtonStylesAndEvents(); --------------  DONE /
+// setResetButtonStylesAndEvents(); ------------  DONE /
+// addLapToTable(); ----------------------------  DONE /
+// resetStopwatch(); ---------------------------  DONE /
+// compareLapsSpeed(); -------------------------  DONE /
+
+const startStopwatch = () => {
+  // 1: START COUNTING TIME
+  startDateObjectCounter = new Date();
+  interval = setInterval(startCountingTime, 10);
+  // 2: CREATE FIRST LAP
   loadFirstLapHTML();
-  switchStartStopEventListeners();
-  setStartStopButtonToStop();
-  toggleLapResetButton();
-  lapEventListener();
-}
+  // 4: CHANGE START BUTTON TO STOP BUTTON
+  setStopButtonStylesAndEvents();
+  // 5: CHANGE ONCLICK EVENT FROM START TO STOP
+  startStopButton.onclick = () => {
+    stopStopwatchCounter();
+  };
+  // 6: SET LAP BUTTON STYLE
+  setLapButtonStylesAndEvents();
+};
 
-function stopTimer() {
+const stopStopwatchCounter = () => {
+  // 1: STOP COUNTING TIME
   clearInterval(interval);
-  startStopButton.removeEventListener("click", stopTimer); // .ONCLICK
-  startStopButton.addEventListener("click", startTimer);
-  setStartStopButtonToStart();
-  setResetButton();
-}
+  previousCount = count;
+  // 2: CHANGE STOP BUTTON TO START BUTTON
+  setStartButtonStylesAndEvents();
+  // 3: CHANGE ONCLICK EVENT FROM START TO STOP
+  startStopButton.onclick = () => {
+    startStopwatch();
+  };
+  // 4: SET LAP BUTTON TO RESET BUTTON
+  setResetButtonStylesAndEvents();
+};
 
-function startCounting() {
-  // NEEDS FIXING, STOP FIRST LAP / JAVASCRIPT IN BUILT SUPPORT
-  milliSeconds++;
-  if (milliSeconds <= 9) {
-    outputMilliSeconds.innerText = `0${milliSeconds}`; // USE INNERTEXT / CHANGE THIS EVERYWHERE
-    lapMiliSec.innerText = "0" + milliSeconds;
-  }
-  if (milliSeconds > 9) {
-    outputMilliSeconds.innerText = milliSeconds;
-    lapMiliSec.innerText = milliSeconds;
-  }
-  if (milliSeconds > 100) {
-    seconds++;
-    outputSeconds.innerText = "0" + seconds;
-    lapSec.innerText = "0" + seconds;
-    milliSeconds = 0;
-    outputMilliSeconds.innerText = "0" + milliSeconds;
-    lapMiliSec.innerText = "0" + milliSeconds;
-  }
-  if (seconds > 9) {
-    outputSeconds.innerText = seconds;
-    lapSec.innerText = seconds;
-  }
-  if (seconds > 59) {
-    minutes++;
-    outputMinutes.innerText = "0" + minutes;
-    lapMinutes.innerText = "0" + minutes;
-    seconds = 0;
-    outputSeconds.innerText = "0" + seconds;
-    lapSec.innerText = "0" + seconds;
-  }
-}
-// ------------------------ //
-
-// TOGGLING START/STOP BUTTONS
-function setStartStopButtonToStart() {
-  // CREATE A CLASS TO ASSIGN WHEN NEEDED INSTEAD OF PUSHING INLINE STYLE
-  startStopButton.setAttribute("id", "default");
-  startTimerButton.setAttribute("style", "background-color: #16472E");
+// BUTTON STYLES AND EVENTS
+const setStartButtonStylesAndEvents = () => {
+  startStopButton.classList.remove("set-stop-button");
+  startStopButton.classList.add("start-stop-button");
+  startTimerButton.setAttribute("style", "background-color: #516472e");
   startStopButton.firstElementChild.textContent = "Start";
-  togglerStartStop = !togglerStartStop;
-}
+  isStartButtonSet = !isStartButtonSet;
+};
 
-function setStartStopButtonToStop() {
-  // CREATE A CLASS TO ASSIGN WHEN NEEDED INSTEAD OF PUSHING INLINE STYLE
-  startStopButton.setAttribute("id", "stopButtonBorder");
+const setStopButtonStylesAndEvents = () => {
+  startStopButton.classList.remove("start-stop-button");
+  startStopButton.classList.add("set-stop-button");
   startTimerButton.setAttribute("style", "background-color: #50211F");
   startStopButton.firstElementChild.textContent = "Stop";
-  togglerStartStop = !togglerStartStop;
-}
+  isStartButtonSet = !isStartButtonSet;
+};
 
-function switchStartStopEventListeners() {
-  if (!togglerStartStop) {
-    startStopButton.removeEventListener("click", startTimer);
-    startStopButton.addEventListener("click", stopTimer);
+const setResetButtonStylesAndEvents = () => {
+  resetLapButton.firstElementChild.innerText = "Reset";
+  resetLapButton.onclick = () => {
+    resetStopwatch();
+  };
+};
+
+const setLapButtonStylesAndEvents = () => {
+  resetLapButton.firstElementChild.innerText = "Lap";
+  resetLapButton.classList.remove("reset-lap-button");
+  resetLapButton.classList.add("set-lap-button");
+  resetLapButton.onclick = () => {
+    addNewLap();
+  };
+};
+// ------------------------------------------------------------ //
+
+// startStopwatch HELPER FUNCTIONS
+const getFormattedTime = () => {
+  currentCounter = new Date();
+  count = +currentCounter - +startDateObjectCounter + previousCount;
+  mainTimerCounters.milliSeconds = Math.floor(count % 1000);
+  mainTimerCounters.seconds = Math.floor(count / 1000) % 60;
+  mainTimerCounters.minutes = Math.floor(count / 60000) % 60;
+};
+
+const startCountingTime = () => {
+  // console.log(
+  //   `startDateObjectCounter: ${+startDateObjectCounter}  currentCounter: ${+currentCounter}  count: ${count}`
+  // );
+  getFormattedTime();
+  displayTimeOnMainTimerAndFirstLap();
+};
+
+const loadFirstLapHTML = () => {
+  if (firstLapHTML === "") {
+    firstLapHTML = `
+          <div id="lap-minutes">00</div>
+          :
+          <div id="lap-seconds">00</div>
+          .
+          <div id="lap-milli-seconds">00</div>
+          `;
+    lapTimeSelector[0].insertAdjacentHTML("beforeend", firstLapHTML);
+    lapNumberSelector[0].insertAdjacentHTML("beforeend", "Lap 1");
   }
-  if (togglerStartStop) {
-    startCounting();
-    setStartStopButtonToStart();
-  }
-}
-// --------------------------- //
+};
 
-// TOGGLING LAP/RESET BUTTONS
-function activateLapButton() {
-  resetButtonBorder.setAttribute("style", "background-color: #3A3A3C");
-  resetButtonBorder.setAttribute("style", "opacity: unset");
-  resetLapButton.setAttribute("style", "background-color: #3A3A3C");
-  resetButtonBorder.firstElementChild.setAttribute("style", "color: #FFFFFF");
-  resetButtonBorder.firstElementChild.innerText = "Lap";
-  togglerLapReset = !togglerLapReset;
-  resetButtonBorder.removeEventListener("click", resetTimer);
-  resetButtonBorder.addEventListener("click", renderLap);
-}
-
-function setResetButton() {
-  resetButtonBorder.firstElementChild.innerText = "Reset";
-  togglerLapReset = !togglerLapReset;
-  resetButtonBorder.removeEventListener("click", renderLap);
-  resetButtonBorder.addEventListener("click", resetTimer);
-}
-
-// --------------------------- //
-
-// RENDERING LAPS // IN PROGRESS
-function lapEventListener() {
-  resetButtonBorder.addEventListener("click", renderLap);
-}
-
-// NEEDS REFACTORING
-function renderLap() {
-  lapMinutes = document.getElementsByClassName("lapMinutes")[lapNumber - 1];
-  lapSec = document.getElementsByClassName("lapSec")[lapNumber - 1];
-  lapMiliSec = document.getElementsByClassName("lapMiliSec")[lapNumber - 1];
-  console.log(document.getElementsByClassName("listingLaps"));
-  let html = "";
-  let lapTime = [
-    outputMilliSeconds.innerText,
-    outputSeconds.innerText,
-    outputMinutes.innerText,
-  ];
+const addNewLap = () => {
+  // 1: CREATE NEW LAP ELEMENT
+  previousCount = 0;
   lapNumber++;
-  const listItemScrollBar = document.createElement("li");
-  listItemScrollBar.setAttribute("class", "defaultLap");
-  defaultLapContainer.insertAdjacentElement("afterbegin", listItemScrollBar);
-  html += `
-    <p class="lap">Lap ${lapNumber - 1}</p><p class="lapTime">${lapTime[2]}:${
-    lapTime[1]
-  }.${lapTime[0]}</p>
-    `;
-  listItemScrollBar.insertAdjacentHTML("afterbegin", html);
-  [...defaultLapList].forEach((el, i) => {
+  newLapElementTable = document.createElement("table");
+  newLapElementTable.classList.add("lap-container");
+  newLapElementBody = document.createElement("tbody");
+  // 2: SAVE PREVIOUS LAP TIMES
+  startDateObjectCounter = new Date();
+  newLapHTML = `
+  <tr>
+    <td class="lap-number">Lap ${lapNumber}</td>
+    <td class="lap-time">  
+      <div id="lap-minutes">${(lapTimerCounters.minutes =
+        lapTimeSelector[0].firstElementChild)}</div>
+      :
+      <div id="lap-seconds">${(lapTimerCounters.seconds =
+        lapTimeSelector[0].firstElementChild.nextElementSibling)}</div>
+      .
+      <div id="lap-milli-seconds">${(lapTimerCounters.milliSeconds =
+        lapTimeSelector[0].lastElementChild)}</div>
+    </td>
+  </tr>
+  `;
+  // 3: PUSH PREVIOUS LAP DOWN THE TABLE
+  lapScrollbarDiv.insertAdjacentElement("afterbegin", newLapElementTable);
+  newLapElementTable.insertAdjacentElement("afterbegin", newLapElementBody);
+  newLapElementBody.insertAdjacentHTML("afterbegin", newLapHTML);
+  // 4: PUSH LAP INTO TOTALLAPS ARRAY
+  totalLaps.unshift(count);
+  // 5: DELETE EMPTY TABLE ROWS
+  [...lapContainer].forEach((el, i) => {
     if (i > 5 && el.innerText === "") el.remove();
   });
-}
+  // 6: SET LAP TO FASTEST OR SLOWEST
+  calculateLapTime();
+};
 
-// --------------------------- //
-
-// RESET TIMER //
-function resetTimer() {
-  resetButtonBorder.removeEventListener("click", resetTimer);
-  resetButtonBorder.removeEventListener("click", renderLap);
-  lapNumber = 2;
-  milliSeconds = 0;
-  seconds = 0;
-  minutes = 0;
-  resetOutputinnerText();
-  html = "";
-  [...defaultLapList].forEach((el, i) => {
-    i < 6 ? (el.innerText = "") : el.remove();
+// WORKS BUT ITS NOT EFFICIENT AT ALL
+const calculateLapTime = () => {
+  totalLaps.forEach((el, i) => {
+    if (el > slowestLap) {
+      [...lapTimeSelector].forEach((el) => {
+        el.parentElement.classList.remove("slowest-lap");
+      });
+      slowestLap = el;
+      slowestLapIndex = i;
+      lapTimeSelector[slowestLapIndex + 1].parentElement.classList.add(
+        "slowest-lap"
+      );
+    } else if (el < fastestLap) {
+      [...lapTimeSelector].forEach((el) => {
+        el.parentElement.classList.remove("fastest-lap");
+      });
+      fastestLap = el;
+      fastestLapIndex = i;
+      lapTimeSelector[fastestLapIndex + 1].parentElement.classList.add(
+        "fastest-lap"
+      );
+    }
   });
-  firstLapHTML = "";
-  togglerLapReset = false;
-  togglerStartStop = false;
-  resetButtonBorder.setAttribute("style", "background-color: #2C2C2E");
-  resetButtonBorder.setAttribute("style", "opacity: 0.5");
-  resetLapButton.setAttribute("style", "background-color: #2C2C2E");
-  resetButtonBorder.firstElementChild.setAttribute("style", "color: #8D8D92");
-}
-// ---------------------------- //
+};
 
-// FASTEST AND SLOWEST LAP LOGIC //
-function compareLapSpeed() {
-  // 1 : RESET NEXT LAP TIME TO 0
-  // 2 : COMPARE PREVIOUS LAP AND ACTUAL LAP (ARRAY METHOD REDUCE??)
-  // 3 : IF CURRENT LAP IS FASTER THAN ALL PREVIOUS LAPS THEN MAKE TEXT COLOR GREEN AND SAVE IN FASTESTLAP VARIABLE AND PRINT LAP IN VIEW
-  // 4 : IF CURRENT LAP IS SLOWER THAN ALL PREVIOUS LAPS THEN MAKE TEXT COLOR RED AND SAVE IN SLOWESTLAP VARIABLE AND PRINT LAP IN VIEW
-  // 5 : IF CURRENT LAP IS NOT FASTER OR SLOWER THAN ALL PREVIOUS LAPS THEN JUST PRINT LAP IN VIEW
-}
-// -------------------------- //
+const displayTimeOnMainTimerAndFirstLap = () => {
+  if (mainTimerCounters.milliSeconds < 9) {
+    mainTimerOutputs.outputMilliSeconds.innerText = `0${mainTimerCounters.milliSeconds}`;
+    lapTimeSelector[0].lastElementChild.innerText = `0${mainTimerCounters.milliSeconds}`;
+  }
+  if (mainTimerCounters.milliSeconds > 9) {
+    mainTimerOutputs.outputMilliSeconds.innerText =
+      mainTimerCounters.milliSeconds.toString().slice(0, -1);
+    lapTimeSelector[0].lastElementChild.innerText =
+      mainTimerCounters.milliSeconds.toString().slice(0, -1);
+  }
+  if (mainTimerCounters.seconds < 9) {
+    mainTimerOutputs.outputSeconds.innerText = `0${mainTimerCounters.seconds}`;
+    lapTimeSelector[0].firstElementChild.nextElementSibling.innerText = `0${mainTimerCounters.seconds}`;
+  }
+  if (mainTimerCounters.seconds > 9 && mainTimerCounters.seconds < 59) {
+    mainTimerOutputs.outputSeconds.innerText = mainTimerCounters.seconds;
+    lapTimeSelector[0].firstElementChild.nextElementSibling.innerText =
+      mainTimerCounters.seconds;
+  }
+  if (mainTimerCounters.minutes < 9) {
+    mainTimerOutputs.outputMinutes.innerText = `0${mainTimerCounters.minutes}`;
+    lapTimeSelector[0].firstElementChild.innerText = `0${mainTimerCounters.minutes}`;
+  }
+  if (mainTimerCounters.minutes > 9) {
+    mainTimerCounters.outputMinutes.innerText = mainTimerCounters.minutes;
+    lapTimeSelector[0].firstElementChild.innerText = mainTimerCounters.minutes;
+  }
+};
+
+const resetStopwatch = () => {
+  lapNumber = 1;
+  startDateObjectCounter = null;
+  currentCounter = 0;
+  count = 0;
+  previousCount = 0;
+  clearInterval(interval);
+  isStartButtonSet = false;
+  isLapButtonSet = false;
+  mainTimerOutputs.outputMilliSeconds.innerText = "00";
+  mainTimerOutputs.outputSeconds.innerText = "00";
+  mainTimerOutputs.outputMinutes.innerText = "00";
+  [...lapContainer].forEach((el) => {
+    el.innerText = "";
+  });
+  loadDefaultLapTable();
+  defaultLapTableHTML = "";
+  firstLapHTML = "";
+  newLapHTML = "";
+  newLapElementTable = "";
+  newLapElementBody = "";
+  mainTimerCounters = {
+    minutes: 0,
+    seconds: 0,
+    milliSeconds: 0,
+  };
+  lapTimerCounters = {
+    minutes: 0,
+    seconds: 0,
+    milliSeconds: 0,
+  };
+  totalLaps = [];
+  slowestLap = 0;
+  slowestLapIndex = 0;
+  fastestLap = Infinity;
+  fastestLapIndex = 0;
+  resetLapButton.classList.remove("set-lap-button");
+  resetLapButton.classList.add("reset-lap-button");
+  resetLapButton.firstElementChild.innerText = "Lap";
+};
+
+// ------------------------------------------------------------ //
+
+// TRYING REQUESTANIMATIONFRAMECALL
+// const requestAnimationFrameCallback = (callback) => {
+//   count = callback;
+
+//   mainTimerCounters.milliSeconds = count % 1000;
+//   console.log(mainTimerCounters.milliSeconds);
+//   mainTimerCounters.seconds = Math.floor(count / 1000) % 60;
+//   mainTimerCounters.minutes = Math.floor(count / 60000) % 60;
+
+//   if (mainTimerCounters.milliSeconds < 9) {
+//     mainTimerOutputs.outputMilliSeconds.innerText = `0${mainTimerCounters.milliSeconds}`;
+//   }
+//   if (mainTimerCounters.milliSeconds > 9) {
+//     mainTimerOutputs.outputMilliSeconds.innerText =
+//       mainTimerCounters.milliSeconds.toString().slice(0, -1);
+//   }
+//   if (mainTimerCounters.seconds < 9) {
+//     mainTimerOutputs.outputSeconds.innerText = `0${mainTimerCounters.seconds}`;
+//   }
+//   if (mainTimerCounters.seconds > 9 && mainTimerCounters.seconds < 59) {
+//     mainTimerOutputs.outputSeconds.innerText = mainTimerCounters.seconds;
+//   }
+//   if (mainTimerCounters.minutes < 9) {
+//     mainTimerOutputs.outputMinutes.innerText = `0${mainTimerCounters.minutes}`;
+//   }
+//   if (mainTimerCounters.minutes > 9) {
+//     mainTimerCounters.outputMinutes.innerText = mainTimerCounters.minutes;
+//   }
+// };
+// requestAnimationFrame_ID = requestAnimationFrame(requestAnimationFrameCallback);

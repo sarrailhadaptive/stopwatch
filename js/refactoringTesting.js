@@ -249,7 +249,7 @@ const addNewLap = () => {
   calculateLapTime();
 };
 
-// WORKS BUT ITS NOT EFFICIENT AT ALL
+// WORKS BUT ITS NOT EFFICIENT AT ALL. TOO MANY LOOPS
 const calculateLapTime = () => {
   totalLaps.forEach((el, i) => {
     if (el > slowestLap) {
@@ -274,6 +274,7 @@ const calculateLapTime = () => {
   });
 };
 
+// THERE MUST BE A SHORTER AND MORE EFFICIENT WAY THAN THIS
 const displayTimeOnMainTimerAndFirstLap = () => {
   if (mainTimerCounters.milliSeconds < 9) {
     mainTimerOutputs.outputMilliSeconds.innerText = `0${mainTimerCounters.milliSeconds}`;
@@ -305,6 +306,13 @@ const displayTimeOnMainTimerAndFirstLap = () => {
 };
 
 const resetStopwatch = () => {
+  [...lapContainer].forEach((el) => {
+    el.innerText = "";
+  });
+  [...lapContainer].forEach((el, i) => {
+    if (i < lapNumber + 7) el.remove();
+  });
+  loadDefaultLapTable();
   lapNumber = 1;
   startDateObjectCounter = null;
   currentCounter = 0;
@@ -316,10 +324,6 @@ const resetStopwatch = () => {
   mainTimerOutputs.outputMilliSeconds.innerText = "00";
   mainTimerOutputs.outputSeconds.innerText = "00";
   mainTimerOutputs.outputMinutes.innerText = "00";
-  [...lapContainer].forEach((el) => {
-    el.innerText = "";
-  });
-  loadDefaultLapTable();
   defaultLapTableHTML = "";
   firstLapHTML = "";
   newLapHTML = "";
@@ -343,6 +347,7 @@ const resetStopwatch = () => {
   resetLapButton.classList.remove("set-lap-button");
   resetLapButton.classList.add("reset-lap-button");
   resetLapButton.firstElementChild.innerText = "Lap";
+  resetLapButton.onclick = null;
 };
 
 // ------------------------------------------------------------ //
