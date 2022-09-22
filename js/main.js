@@ -1,24 +1,29 @@
 "use strict";
-// GLOBAL SELECTORS
-// HTML ELEMENTS
-const lapScrollbarDiv = document.getElementsByClassName("lap-scrollbar-div")[0];
-const mainTimerOutputs = {
-  outputMinutes: document.getElementById("timer-minutes"),
-  outputSeconds: document.getElementById("timer-seconds"),
-  outputMilliSeconds: document.getElementById("timer-milli-seconds"),
-};
-const startStopButton = document.getElementsByClassName("start-stop-button")[0];
-const resetLapButton = document.getElementsByClassName("reset-lap-button")[0];
-const resetTimerButton = document.getElementsByClassName(
-  "reset-lap-button-container"
-)[0];
-const startTimerButton = document.getElementsByClassName(
-  "start-stop-button-container"
-)[0];
-const lapContainer = document.getElementsByClassName("lap-container");
-const lapTableBodySelector = document.getElementsByTagName("table");
-const lapNumberSelector = document.getElementsByClassName("lap-number");
-const lapTimeSelector = document.getElementsByClassName("lap-time");
+import {
+  // HTMLSelectors.js
+  lapScrollbarDiv,
+  mainTimerOutputs,
+  startStopButton,
+  resetLapButton,
+  startTimerButton,
+  lapContainer,
+  lapNumberSelector,
+  lapTimeSelector,
+  // insertHTMLAndElements.js
+  loadDefaultLapTable,
+  loadFirstLapHTML,
+  isFirstLapOnToggler,
+  // addButtonStylesAndEvents.js
+  setStartButtonStylesAndEvents,
+  setStopButtonStylesAndEvents,
+  setResetButtonStylesAndEvents,
+  setLapButtonStylesAndEvents,
+  // startStopwatchHelpers.js
+  displayTimeOnMainTimerAndFirstLap,
+  // lapCalculations.js
+  calculateLapTime,
+  resetSlowestAndFastestLap,
+} from "./features/index.js";
 // -------------------------------------------------------------------------------- //
 // FUNCTION VARIABLES
 let mainTimerCounters = {
@@ -31,75 +36,25 @@ let lapTimerCounters = {
   seconds: 0,
   milliSeconds: 0,
 };
-let defaultLapTableHTML = "";
-let firstLapHTML = "";
-let newLapHTML = "";
-let newLapElementTable = "";
-let newLapElementBody = "";
 let lapNumber = 1;
 let count = 0;
 let previousCount = 0;
-let interval;
 let startDateObjectCounter = 0;
 let currentCounter = 0;
-let totalLaps = [];
-let slowestLap = 0;
-let slowestLapIndex = 0;
-let fastestLap = Infinity;
-let fastestLapIndex = 0;
-let isStartButtonSet = false;
-let isLapButtonSet = false;
-
+let interval;
 // --------------------------------------------------------------------------------- //
-
 // STARTER FUNCTIONS
-const loadDefaultLapTable = () => {
-  defaultLapTableHTML = `
-  <table class="lap-container">
-        <tr>
-          <td class="lap-number"></td>
-          <td class="lap-time"></td>
-        </tr>
-      </table>
-      <table class="lap-container">
-        <tr>
-          <td class="lap-number"></td>
-          <td class="lap-time"></td>
-        </tr>
-      </table>
-      <table class="lap-container">
-        <tr>
-          <td class="lap-number"></td>
-          <td class="lap-time"></td>
-        </tr>
-      </table>
-      <table class="lap-container">
-        <tr>
-          <td class="lap-number"></td>
-          <td class="lap-time"></td>
-        </tr>
-      </table>
-      <table class="lap-container">
-        <tr>
-          <td class="lap-number"></td>
-          <td class="lap-time"></td>
-        </tr>
-      </table>
-      <table class="lap-container">
-        <tr>
-          <td class="lap-number"></td>
-          <td class="lap-time"></td>
-        </tr>
-      </table>
-      `;
-  lapScrollbarDiv.insertAdjacentHTML("afterbegin", defaultLapTableHTML);
-};
-
 loadDefaultLapTable();
 
+const startStopwatchMain = () => {
+  startStopwatch();
+  startStopButton.onclick = () => {
+    stopStopwatchCounter();
+  };
+};
 startStopButton.onclick = () => {
   clearInterval(interval);
-  startStopwatch();
+  startStopwatchMain();
 };
 
 const startStopwatch = () => {
@@ -107,15 +62,18 @@ const startStopwatch = () => {
   startDateObjectCounter = new Date();
   interval = setInterval(startCountingTime, 10);
   // 2: CREATE FIRST LAP
-  loadFirstLapHTML();
-  // 4: CHANGE START BUTTON TO STOP BUTTON
-  setStopButtonStylesAndEvents();
-  // 5: CHANGE ONCLICK EVENT FROM START TO STOP
+  loadFirstLapHTML(lapTimeSelector, lapNumberSelector);
+  // 3: CHANGE START BUTTON TO STOP BUTTON
+  setStopButtonStylesAndEvents(startStopButton, startTimerButton);
   startStopButton.onclick = () => {
     stopStopwatchCounter();
   };
-  // 6: SET LAP BUTTON STYLE
-  setLapButtonStylesAndEvents();
+  // 4: SET LAP BUTTON STYLE
+  setLapButtonStylesAndEvents(resetLapButton);
+  resetLapButton.onclick = () => {
+    addNewLap();
+    calculateLapTime(count, lapTimeSelector);
+  };
 };
 
 const stopStopwatchCounter = () => {
@@ -123,50 +81,19 @@ const stopStopwatchCounter = () => {
   clearInterval(interval);
   previousCount = count;
   // 2: CHANGE STOP BUTTON TO START BUTTON
-  setStartButtonStylesAndEvents();
+  setStartButtonStylesAndEvents(startStopButton, startTimerButton);
   // 3: CHANGE ONCLICK EVENT FROM START TO STOP
   startStopButton.onclick = () => {
     startStopwatch();
   };
   // 4: SET LAP BUTTON TO RESET BUTTON
-  setResetButtonStylesAndEvents();
-};
-
-// BUTTON STYLES AND EVENTS
-const setStartButtonStylesAndEvents = () => {
-  startStopButton.classList.remove("set-stop-button");
-  startStopButton.classList.add("start-stop-button");
-  startTimerButton.setAttribute("style", "background-color: #516472e");
-  startStopButton.firstElementChild.textContent = "Start";
-  isStartButtonSet = !isStartButtonSet;
-};
-
-const setStopButtonStylesAndEvents = () => {
-  startStopButton.classList.remove("start-stop-button");
-  startStopButton.classList.add("set-stop-button");
-  startTimerButton.setAttribute("style", "background-color: #50211F");
-  startStopButton.firstElementChild.textContent = "Stop";
-  isStartButtonSet = !isStartButtonSet;
-};
-
-const setResetButtonStylesAndEvents = () => {
-  resetLapButton.firstElementChild.innerText = "Reset";
+  setResetButtonStylesAndEvents(resetLapButton, lapNumberSelector);
   resetLapButton.onclick = () => {
     resetStopwatch();
   };
 };
 
-const setLapButtonStylesAndEvents = () => {
-  resetLapButton.firstElementChild.innerText = "Lap";
-  resetLapButton.classList.remove("reset-lap-button");
-  resetLapButton.classList.add("set-lap-button");
-  resetLapButton.onclick = () => {
-    addNewLap();
-  };
-};
-// ------------------------------------------------------------ //
-
-// startStopwatch HELPER FUNCTIONS
+// // startStopwatch HELPER FUNCTIONS
 const getFormattedTime = () => {
   currentCounter = new Date();
   count = +currentCounter - +startDateObjectCounter + previousCount;
@@ -177,150 +104,55 @@ const getFormattedTime = () => {
 
 const startCountingTime = () => {
   getFormattedTime();
-  displayTimeOnMainTimerAndFirstLap();
+  displayTimeOnMainTimerAndFirstLap(mainTimerCounters);
 };
-
-const loadFirstLapHTML = () => {
-  if (firstLapHTML === "") {
-    firstLapHTML = `
-          <div id="lap-minutes">00</div>
-          :
-          <div id="lap-seconds">00</div>
-          .
-          <div id="lap-milli-seconds">00</div>
-          `;
-    lapTimeSelector[0].insertAdjacentHTML("beforeend", firstLapHTML);
-    lapNumberSelector[0].insertAdjacentHTML("beforeend", "Lap 1");
-  }
-};
+// ------------------------------------------------------------------- //
 
 const addNewLap = () => {
-  // 1: CREATE NEW LAP ELEMENT
+  // 2: RESTART LAP TIME
   previousCount = 0;
   lapNumber++;
-  newLapElementTable = document.createElement("table");
-  newLapElementTable.classList.add("lap-container");
-  newLapElementBody = document.createElement("tbody");
-  // 2: SAVE PREVIOUS LAP TIMES
   startDateObjectCounter = new Date();
-  newLapHTML = `
-  <tr>
-    <td class="lap-number">Lap ${lapNumber}</td>
-    <td class="lap-time">  
-      <div id="lap-minutes">${(lapTimerCounters.minutes =
-        lapTimeSelector[0].firstElementChild)}</div>
-      :
-      <div id="lap-seconds">${(lapTimerCounters.seconds =
-        lapTimeSelector[0].firstElementChild.nextElementSibling)}</div>
-      .
-      <div id="lap-milli-seconds">${(lapTimerCounters.milliSeconds =
-        lapTimeSelector[0].lastElementChild)}</div>
-    </td>
-  </tr>
-  `;
   // 3: PUSH PREVIOUS LAP DOWN THE TABLE
-  lapScrollbarDiv.insertAdjacentElement("afterbegin", newLapElementTable);
-  newLapElementTable.insertAdjacentElement("afterbegin", newLapElementBody);
-  newLapElementBody.insertAdjacentHTML("afterbegin", newLapHTML);
-  // 4: PUSH LAP INTO TOTALLAPS ARRAY
-  totalLaps.unshift(count);
+  lapScrollbarDiv.insertAdjacentHTML(
+    "afterbegin",
+    ` <table class="lap-container">
+        <tr>
+          <td class="lap-number">Lap ${lapNumber}</td>
+          <td class="lap-time">
+            <div id="lap-minutes">${(lapTimerCounters.minutes =
+              lapTimeSelector[0].firstElementChild)}</div>
+            :
+            <div id="lap-seconds">${(lapTimerCounters.seconds =
+              lapTimeSelector[0].firstElementChild.nextElementSibling)}</div>
+            .
+            <div id="lap-milli-seconds">${(lapTimerCounters.milliSeconds =
+              lapTimeSelector[0].lastElementChild)}</div>
+          </td>
+        </tr>
+      </table>`
+  );
   // 5: DELETE EMPTY TABLE ROWS
   [...lapContainer].forEach((el, i) => {
     if (i > 5 && el.innerText === "") el.remove();
   });
-  // 6: SET LAP TO FASTEST OR SLOWEST
-  calculateLapTime();
 };
-
-// WORKS BUT ITS NOT EFFICIENT AT ALL. TOO MANY LOOPS
-const calculateLapTime = () => {
-  totalLaps.forEach((el, i) => {
-    if (el > slowestLap) {
-      [...lapTimeSelector].forEach((el) => {
-        el.parentElement.classList.remove("slowest-lap");
-      });
-      slowestLap = el;
-      slowestLapIndex = i;
-      lapTimeSelector[slowestLapIndex + 1].parentElement.classList.add(
-        "slowest-lap"
-      );
-    } else if (el < fastestLap) {
-      [...lapTimeSelector].forEach((el) => {
-        el.parentElement.classList.remove("fastest-lap");
-      });
-      fastestLap = el;
-      fastestLapIndex = i;
-      lapTimeSelector[fastestLapIndex + 1].parentElement.classList.add(
-        "fastest-lap"
-      );
-    }
-  });
-};
-
-const calculateLapTimeTesting = () => {};
-
-const addPadStartToTime = (time) => {
-  return time.toString(10).padStart(2, "0");
-};
-
-const displayTimeOnMainTimer = () => {
-  // 1: DISPLAY MILLISECONDS
-  mainTimerOutputs.outputMilliSeconds.innerText = addPadStartToTime(
-    mainTimerCounters.milliSeconds
-  );
-  // 2: DISPLAY SECONDS
-  mainTimerOutputs.outputSeconds.innerText = addPadStartToTime(
-    mainTimerCounters.seconds
-  );
-  // 3: DISPLAY MINUTES
-  mainTimerOutputs.outputMinutes.innerText = addPadStartToTime(
-    mainTimerCounters.minutes
-  );
-};
-
-const displayTimeOnFirstLapTimer = () => {
-  // 1: DISPLAY MILLISECONDS
-  lapTimeSelector[0].lastElementChild.innerText = addPadStartToTime(
-    mainTimerCounters.milliSeconds
-  );
-  // 2: DISPLAY SECONDS
-  lapTimeSelector[0].firstElementChild.nextElementSibling.innerText =
-    addPadStartToTime(mainTimerCounters.seconds);
-  // 3: DISPLAY MINUTES
-  lapTimeSelector[0].firstElementChild.innerText = addPadStartToTime(
-    mainTimerCounters.minutes
-  );
-};
-
-const displayTimeOnMainTimerAndFirstLap = () => {
-  displayTimeOnMainTimer();
-  displayTimeOnFirstLapTimer();
-};
-
+// ---------------------------------------------------------------------  //
 const resetStopwatch = () => {
-  [...lapContainer].forEach((el) => {
-    el.innerText = "";
-  });
   [...lapContainer].forEach((el, i) => {
     if (i < lapNumber + 7) el.remove();
   });
   loadDefaultLapTable();
+  isFirstLapOnToggler();
   lapNumber = 1;
   startDateObjectCounter = null;
   currentCounter = 0;
   count = 0;
   previousCount = 0;
   clearInterval(interval);
-  isStartButtonSet = false;
-  isLapButtonSet = false;
   mainTimerOutputs.outputMilliSeconds.innerText = "00";
   mainTimerOutputs.outputSeconds.innerText = "00";
   mainTimerOutputs.outputMinutes.innerText = "00";
-  defaultLapTableHTML = "";
-  firstLapHTML = "";
-  newLapHTML = "";
-  newLapElementTable = "";
-  newLapElementBody = "";
   mainTimerCounters = {
     minutes: 0,
     seconds: 0,
@@ -331,15 +163,10 @@ const resetStopwatch = () => {
     seconds: 0,
     milliSeconds: 0,
   };
-  totalLaps = [];
-  slowestLap = 0;
-  slowestLapIndex = 0;
-  fastestLap = Infinity;
-  fastestLapIndex = 0;
+  resetSlowestAndFastestLap();
   resetLapButton.classList.remove("set-lap-button");
   resetLapButton.classList.add("reset-lap-button");
   resetLapButton.firstElementChild.innerText = "Lap";
   resetLapButton.onclick = null;
 };
-
 // ------------------------------------------------------------ //
