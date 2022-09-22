@@ -24,7 +24,6 @@ export const displayTimeOnFirstLapTimer = (millis, seconds, minutes) => {
 export const addNewLap = (counter) => {
   lapCounter = counter;
   lapNumber++;
-  // 3: PUSH PREVIOUS LAP DOWN THE TABLE
   selectors.lapScrollbarDiv.insertAdjacentHTML(
     "afterbegin",
     ` <table class="lap-container">
@@ -38,7 +37,6 @@ export const addNewLap = (counter) => {
         </tr>
       </table>`
   );
-  // 5: DELETE EMPTY TABLE ROWS
   [...selectors.lapContainer].forEach((el, i) => {
     if (i > 5 && el.innerText === "") el.remove();
   });
