@@ -57,6 +57,7 @@
 }
 
 .lap-time {
+  font-weight: 300;
   height: 21px;
   color: #ffffff;
   font-size: 14px;
@@ -66,11 +67,7 @@
   display: flex;
   margin: 0;
   padding-top: 6px;
-}
-
-.lap-time div {
-  font-weight: 300;
-  width: 17px;
+  font-variant-numeric: tabular-nums;
 }
 
 .fastest-lap td {
@@ -89,7 +86,7 @@
 
 /* TIMER */
 
-.timer {
+#timer h1 {
   justify-content: center;
   display: inline-flex;
   padding-top: 121px;
@@ -98,12 +95,7 @@
   font-size: 65px;
   text-align: center;
   color: #ffffff;
-}
-
-.timer div {
-  padding-right: 3px;
-  width: 78px;
-  float: left;
+  font-variant-numeric: tabular-nums;
 }
 
 /* RESET/LAP START/STOP BUTTONS

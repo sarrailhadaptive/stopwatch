@@ -1,25 +1,7 @@
 "use strict";
 // HTMLSelectors.js
-import {
-  lapScrollbarDiv,
-  mainTimerOutputs,
-  startStopButton,
-  resetLapButton,
-  startTimerButton,
-  lapContainer,
-  lapNumberSelector,
-  lapTimeSelector,
-} from "../selectors/HTMLSelectors.js";
-export {
-  lapScrollbarDiv,
-  mainTimerOutputs,
-  startStopButton,
-  resetLapButton,
-  startTimerButton,
-  lapContainer,
-  lapNumberSelector,
-  lapTimeSelector,
-};
+import * as selectors from "../selectors/HTMLSelectors.js";
+export { selectors };
 // insertHTMLAndElements.js
 import {
   loadDefaultLapTable,
@@ -43,13 +25,17 @@ export {
 };
 
 // startStopwatchHelpers.js
-import { displayTimeOnMainTimerAndFirstLap } from "./startStopwatchHelpers.js";
-export { displayTimeOnMainTimerAndFirstLap };
+import {
+  displayTimeOnMainTimer,
+  addNewLap,
+  lapNumber,
+  setLapNumberTo1,
+} from "./startStopwatchHelpers.js";
+export { displayTimeOnMainTimer, addNewLap, lapNumber, setLapNumberTo1 };
 
 // lapCalculations.js
 import {
   calculateLapTime,
   resetSlowestAndFastestLap,
-  addNewLap,
 } from "./lapCalculations.js";
-export { calculateLapTime, resetSlowestAndFastestLap, addNewLap };
+export { calculateLapTime, resetSlowestAndFastestLap };

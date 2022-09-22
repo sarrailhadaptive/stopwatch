@@ -2,8 +2,11 @@
 
 export const lapScrollbarDiv =
   document.getElementsByClassName("lap-scrollbar-div")[0];
-export const mainTimerOutput =
-  document.getElementById("timer").firstElementChild;
+export const mainTimerOutputs = {
+  outputMinutes: document.getElementById("timer-minutes"),
+  outputSeconds: document.getElementById("timer-seconds"),
+  outputMilliSeconds: document.getElementById("timer-milli-seconds"),
+};
 export const startStopButton =
   document.getElementsByClassName("start-stop-button")[0];
 export const resetLapButton =

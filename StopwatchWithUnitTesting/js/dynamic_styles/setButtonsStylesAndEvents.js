@@ -1,6 +1,6 @@
 "use strict";
-import { selectors } from "./index.js";
-// BUTTON STYLES AND EVENTS
+import { selectors } from "../index.js";
+
 export const setStartButtonStylesAndEvents = () => {
   selectors.startStopButton.classList.remove("set-stop-button");
   selectors.startStopButton.classList.add("start-stop-button");
