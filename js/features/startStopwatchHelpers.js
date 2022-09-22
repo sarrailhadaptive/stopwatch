@@ -5,7 +5,7 @@ let lapCounter = 0;
 export let lapNumber = 1;
 // --------------------------------------------------------------------------  //
 
-const addPadStartToTime = (time) => {
+export const addPadStartToTime = (time) => {
   return time.toString().padStart(2, "0");
 };
 
@@ -15,26 +15,10 @@ export const displayTimeOnMainTimer = (millis, seconds, minutes) => {
   )}:${addPadStartToTime(seconds)}.${addPadStartToTime(millis)}`);
 };
 
-export const displayTimeOnFirstLapTimer = (lapTimerCounters) => {
-  // 1: DISPLAY MILLISECONDS
-  selectors.lapTimeSelector[0].lastElementChild.innerText = addPadStartToTime(
-    lapTimerCounters.milliSeconds
-  );
-  // 2: DISPLAY SECONDS
-  selectors.lapTimeSelector[0].firstElementChild.nextElementSibling.innerText =
-    addPadStartToTime(lapTimerCounters.seconds);
-  // 3: DISPLAY MINUTES
-  selectors.lapTimeSelector[0].firstElementChild.innerText = addPadStartToTime(
-    lapTimerCounters.minutes
-  );
-};
-
-export const displayTimeOnMainTimerAndFirstLap = (
-  mainTimerCounters,
-  lapTimerCounters
-) => {
-  displayTimeOnMainTimer(mainTimerCounters);
-  displayTimeOnFirstLapTimer(lapTimerCounters);
+export const displayTimeOnFirstLapTimer = (millis, seconds, minutes) => {
+  return (selectors.lapTimeSelector[0].innerText = `${addPadStartToTime(
+    minutes
+  )}:${addPadStartToTime(seconds)}.${addPadStartToTime(millis)}`);
 };
 
 export const addNewLap = (counter) => {

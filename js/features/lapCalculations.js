@@ -1,17 +1,21 @@
 "use strict";
 import { selectors } from "./index.js";
+// import { helpers } from "./index.js";
 let slowestLap = 0;
 let fastestLap = Infinity;
 
-export const calculateLapTime = (count) => {
-  if (slowestLap < count) {
+export const calculateLapTime = (lastLapTime) => {
+  console.log(
+    `Last Lap Time: ${lastLapTime}  -  Slowest Lap: ${slowestLap}  -  Fastest Lap: ${fastestLap}`
+  );
+  if (lastLapTime > slowestLap) {
     displayRedIfSlowest(selectors.lapTimeSelector);
     selectors.lapTimeSelector[1].parentElement.classList.add("slowest-lap");
-    slowestLap = count;
-  } else if (fastestLap > count) {
+    slowestLap = lastLapTime;
+  } else if (lastLapTime < fastestLap) {
     displayGreenIfFastest(selectors.lapTimeSelector);
     selectors.lapTimeSelector[1].parentElement.classList.add("fastest-lap");
-    fastestLap = count;
+    fastestLap = lastLapTime;
   }
 };
 

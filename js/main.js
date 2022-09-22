@@ -15,7 +15,14 @@ import {
 
 // FUNCTION VARIABLES
 let counter = 0;
+let lapTimeCounter = 0;
 let previousCounter = 0;
+let lapTimesResetter = 0;
+let lapTimes = {
+  millis: 0,
+  seconds: 0,
+  minutes: 0,
+};
 let times = {
   millis: 0,
   seconds: 0,
@@ -38,36 +45,30 @@ selectors.startStopButton.onclick = () => {
 };
 
 const startStopwatch = () => {
-  // 1: START COUNTING TIME
+  loaders.loadFirstLapHTML();
   requestAnimationFrame_ID = requestAnimationFrame(
     requestAnimationFrameCallback
   );
-  // 2: CREATE FIRST LAP
-  loaders.loadFirstLapHTML();
-  // 3: CHANGE START BUTTON TO STOP BUTTON
   styles.setStopButtonStylesAndEvents();
   selectors.startStopButton.onclick = () => {
     stopStopwatchCounter();
   };
-  // 4: SET LAP BUTTON STYLE
   styles.setLapButtonStylesAndEvents();
   selectors.resetLapButton.onclick = () => {
     helpers.addNewLap(counter);
-    lapCalculations.calculateLapTime(counter);
+    lapTimesResetter = counter;
+    lapCalculations.calculateLapTime(lapTimeCounter);
+    lapTimeCounter = 0;
   };
 };
 
 const stopStopwatchCounter = () => {
-  // 1: STOP COUNTING TIME
   previousCounter = counter;
   cancelAnimationFrame(requestAnimationFrame_ID);
-  // 2: CHANGE STOP BUTTON TO START BUTTON
   styles.setStartButtonStylesAndEvents();
-  // 3: CHANGE ONCLICK EVENT FROM START TO STOP
   selectors.startStopButton.onclick = () => {
     startStopwatch();
   };
-  // 4: SET LAP BUTTON TO RESET BUTTON
   styles.setResetButtonStylesAndEvents();
   selectors.resetLapButton.onclick = () => {
     resetStopwatch(helpers.lapNumber);
@@ -76,13 +77,24 @@ const stopStopwatchCounter = () => {
 
 const requestAnimationFrameCallback = () => {
   counter++;
-  console.log(`Counter: ${counter}`);
+  lapTimeCounter++;
 
   times.millis = counter % 100;
   times.seconds = Math.floor(counter / 100) % 60;
   times.minutes = Math.floor(counter / 6000) % 60;
+  // lapTimes.millis = times.millis;
+  // lapTimes.seconds = times.seconds - Math.floor((lapTimesResetter / 100) % 60);
+  // lapTimes.minutes = times.minutes - Math.floor((lapTimesResetter / 6000) % 60);
+  lapTimes.millis = lapTimeCounter % 100;
+  lapTimes.seconds = Math.floor(lapTimeCounter / 100) % 60;
+  lapTimes.minutes = Math.floor(lapTimeCounter / 6000) % 60;
 
   helpers.displayTimeOnMainTimer(times.millis, times.seconds, times.minutes);
+  helpers.displayTimeOnFirstLapTimer(
+    lapTimes.millis,
+    lapTimes.seconds,
+    lapTimes.minutes
+  );
   requestAnimationFrame_ID = requestAnimationFrame(
     requestAnimationFrameCallback
   );
@@ -98,6 +110,8 @@ const resetStopwatch = () => {
   loaders.isFirstLapOnToggler();
   helpers.setLapNumberTo1();
   counter = 0;
+  lapTimesResetter = 0;
+  lapTimeCounter = 0;
   selectors.mainTimerOutput.innerText = "00:00.00";
   lapCalculations.resetSlowestAndFastestLap();
   selectors.resetLapButton.classList.remove("set-lap-button");

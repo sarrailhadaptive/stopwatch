@@ -1,6 +1,7 @@
 "use strict";
-let isFirstLapOn = false;
+export let isFirstLapOn = false;
 import { selectors } from "./index.js";
+import { helpers } from "./index.js";
 export const loadDefaultLapTable = () => {
   selectors.lapScrollbarDiv.insertAdjacentHTML(
     "afterbegin",
@@ -49,7 +50,7 @@ export const loadFirstLapHTML = () => {
     selectors.lapTimeSelector[0].insertAdjacentHTML(
       "beforeend",
       `
-      00:00.00
+      <td class="lap-time">00:00.00</td>
     `
     );
     selectors.lapNumberSelector[0].insertAdjacentHTML("beforeend", "Lap 1");
