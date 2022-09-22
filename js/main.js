@@ -11,9 +11,9 @@ import {
   // lapCalculations.js
   lapCalculations,
 } from "./features/index.js";
+
 // -------------------------------------------------------------------------------- //
 
-// FUNCTION VARIABLES
 let counter = 0;
 let lapTimeCounter = 0;
 let previousCounter = 0;
@@ -29,9 +29,9 @@ let times = {
   minutes: 0,
 };
 let requestAnimationFrame_ID = undefined;
+
 // --------------------------------------------------------------------------------- //
 
-// STARTER FUNCTIONS
 loaders.loadDefaultLapTable();
 
 const startStopwatchMain = () => {
@@ -82,9 +82,6 @@ const requestAnimationFrameCallback = () => {
   times.millis = counter % 100;
   times.seconds = Math.floor(counter / 100) % 60;
   times.minutes = Math.floor(counter / 6000) % 60;
-  // lapTimes.millis = times.millis;
-  // lapTimes.seconds = times.seconds - Math.floor((lapTimesResetter / 100) % 60);
-  // lapTimes.minutes = times.minutes - Math.floor((lapTimesResetter / 6000) % 60);
   lapTimes.millis = lapTimeCounter % 100;
   lapTimes.seconds = Math.floor(lapTimeCounter / 100) % 60;
   lapTimes.minutes = Math.floor(lapTimeCounter / 6000) % 60;
@@ -99,9 +96,7 @@ const requestAnimationFrameCallback = () => {
     requestAnimationFrameCallback
   );
 };
-// ------------------------------------------------------------------- //
 
-// ---------------------------------------------------------------------  //
 const resetStopwatch = () => {
   [...selectors.lapContainer].forEach((el, i) => {
     if (i < helpers.lapNumber + 7) el.remove();
@@ -119,4 +114,3 @@ const resetStopwatch = () => {
   selectors.resetLapButton.firstElementChild.innerText = "Lap";
   selectors.resetLapButton.onclick = null;
 };
-// ------------------------------------------------------------ //
