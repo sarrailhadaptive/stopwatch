@@ -9,8 +9,7 @@ import {
   // startStopwatchHelpers.js
   helpers,
   // lapCalculations.js
-  calculateLapTime,
-  resetSlowestAndFastestLap,
+  lapCalculations,
 } from "./features/index.js";
 // -------------------------------------------------------------------------------- //
 
@@ -54,6 +53,7 @@ const startStopwatch = () => {
   styles.setLapButtonStylesAndEvents();
   selectors.resetLapButton.onclick = () => {
     helpers.addNewLap(counter);
+    lapCalculations.calculateLapTime(counter);
   };
 };
 
@@ -99,7 +99,7 @@ const resetStopwatch = () => {
   helpers.setLapNumberTo1();
   counter = 0;
   selectors.mainTimerOutput.innerText = "00:00.00";
-  resetSlowestAndFastestLap();
+  lapCalculations.resetSlowestAndFastestLap();
   selectors.resetLapButton.classList.remove("set-lap-button");
   selectors.resetLapButton.classList.add("reset-lap-button");
   selectors.resetLapButton.firstElementChild.innerText = "Lap";

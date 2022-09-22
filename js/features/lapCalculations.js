@@ -1,16 +1,16 @@
 "use strict";
-
+import { selectors } from "./index.js";
 let slowestLap = 0;
 let fastestLap = Infinity;
 
-export const calculateLapTime = (count, lapTimeSelector) => {
+export const calculateLapTime = (count) => {
   if (slowestLap < count) {
-    displayRedIfSlowest(lapTimeSelector);
-    lapTimeSelector[1].parentElement.classList.add("slowest-lap");
+    displayRedIfSlowest(selectors.lapTimeSelector);
+    selectors.lapTimeSelector[1].parentElement.classList.add("slowest-lap");
     slowestLap = count;
   } else if (fastestLap > count) {
-    displayGreenIfFastest(lapTimeSelector);
-    lapTimeSelector[1].parentElement.classList.add("fastest-lap");
+    displayGreenIfFastest(selectors.lapTimeSelector);
+    selectors.lapTimeSelector[1].parentElement.classList.add("fastest-lap");
     fastestLap = count;
   }
 };
@@ -20,14 +20,14 @@ export const resetSlowestAndFastestLap = () => {
   fastestLap = Infinity;
 };
 
-export const displayRedIfSlowest = (lapTimeSelector) => {
-  [...lapTimeSelector].forEach((el) => {
+export const displayRedIfSlowest = () => {
+  [...selectors.lapTimeSelector].forEach((el) => {
     el.parentElement.classList.remove("slowest-lap");
   });
 };
 
-export const displayGreenIfFastest = (lapTimeSelector) => {
-  [...lapTimeSelector].forEach((el) => {
+export const displayGreenIfFastest = () => {
+  [...selectors.lapTimeSelector].forEach((el) => {
     el.parentElement.classList.remove("fastest-lap");
   });
 };

@@ -15,8 +15,5 @@ import * as helpers from "./startStopwatchHelpers.js";
 export { helpers };
 
 // lapCalculations.js
-import {
-  calculateLapTime,
-  resetSlowestAndFastestLap,
-} from "./lapCalculations.js";
-export { calculateLapTime, resetSlowestAndFastestLap };
+import * as lapCalculations from "./lapCalculations.js";
+export { lapCalculations };
