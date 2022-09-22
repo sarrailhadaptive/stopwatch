@@ -5,7 +5,7 @@ let lapCounter = 0;
 export let lapNumber = 1;
 // --------------------------------------------------------------------------  //
 
-export const addPadStartToTime = (time) => {
+const addPadStartToTime = (time) => {
   return time.toString().padStart(2, "0");
 };
 

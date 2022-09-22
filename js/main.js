@@ -3,19 +3,11 @@ import {
   // HTMLSelectors.js
   selectors,
   // insertHTMLAndElements.js
-  loadDefaultLapTable,
-  loadFirstLapHTML,
-  isFirstLapOnToggler,
+  loaders,
   // addButtonStylesAndEvents.js
-  setStartButtonStylesAndEvents,
-  setStopButtonStylesAndEvents,
-  setResetButtonStylesAndEvents,
-  setLapButtonStylesAndEvents,
+  styles,
   // startStopwatchHelpers.js
-  displayTimeOnMainTimer,
-  addNewLap,
-  lapNumber,
-  setLapNumberTo1,
+  helpers,
   // lapCalculations.js
   calculateLapTime,
   resetSlowestAndFastestLap,
@@ -34,7 +26,7 @@ let requestAnimationFrame_ID = undefined;
 // --------------------------------------------------------------------------------- //
 
 // STARTER FUNCTIONS
-loadDefaultLapTable();
+loaders.loadDefaultLapTable();
 
 const startStopwatchMain = () => {
   startStopwatch();
@@ -52,16 +44,16 @@ const startStopwatch = () => {
     requestAnimationFrameCallback
   );
   // 2: CREATE FIRST LAP
-  loadFirstLapHTML();
+  loaders.loadFirstLapHTML();
   // 3: CHANGE START BUTTON TO STOP BUTTON
-  setStopButtonStylesAndEvents();
+  styles.setStopButtonStylesAndEvents();
   selectors.startStopButton.onclick = () => {
     stopStopwatchCounter();
   };
   // 4: SET LAP BUTTON STYLE
-  setLapButtonStylesAndEvents();
+  styles.setLapButtonStylesAndEvents();
   selectors.resetLapButton.onclick = () => {
-    addNewLap(counter);
+    helpers.addNewLap(counter);
   };
 };
 
@@ -70,19 +62,18 @@ const stopStopwatchCounter = () => {
   previousCounter = counter;
   cancelAnimationFrame(requestAnimationFrame_ID);
   // 2: CHANGE STOP BUTTON TO START BUTTON
-  setStartButtonStylesAndEvents();
+  styles.setStartButtonStylesAndEvents();
   // 3: CHANGE ONCLICK EVENT FROM START TO STOP
   selectors.startStopButton.onclick = () => {
     startStopwatch();
   };
   // 4: SET LAP BUTTON TO RESET BUTTON
-  setResetButtonStylesAndEvents();
+  styles.setResetButtonStylesAndEvents();
   selectors.resetLapButton.onclick = () => {
-    resetStopwatch(lapNumber);
+    resetStopwatch(helpers.lapNumber);
   };
 };
 
-// // startStopwatch HELPER FUNCTIONS
 const requestAnimationFrameCallback = () => {
   counter++;
   console.log(`Counter: ${counter}`);
@@ -91,7 +82,7 @@ const requestAnimationFrameCallback = () => {
   times.seconds = Math.floor(counter / 100) % 60;
   times.minutes = Math.floor(counter / 6000) % 60;
 
-  displayTimeOnMainTimer(times.millis, times.seconds, times.minutes);
+  helpers.displayTimeOnMainTimer(times.millis, times.seconds, times.minutes);
   requestAnimationFrame_ID = requestAnimationFrame(
     requestAnimationFrameCallback
   );
@@ -101,11 +92,11 @@ const requestAnimationFrameCallback = () => {
 // ---------------------------------------------------------------------  //
 const resetStopwatch = () => {
   [...selectors.lapContainer].forEach((el, i) => {
-    if (i < lapNumber + 7) el.remove();
+    if (i < helpers.lapNumber + 7) el.remove();
   });
-  loadDefaultLapTable();
-  isFirstLapOnToggler();
-  setLapNumberTo1();
+  loaders.loadDefaultLapTable();
+  loaders.isFirstLapOnToggler();
+  helpers.setLapNumberTo1();
   counter = 0;
   selectors.mainTimerOutput.innerText = "00:00.00";
   resetSlowestAndFastestLap();
