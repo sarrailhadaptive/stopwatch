@@ -17,3 +17,7 @@ export { helpers };
 // lapCalculations.js
 import * as lapCalculations from "./lapCalculations.js";
 export { lapCalculations };
+
+// rAFCountingTime.js
+import * as rAFCountingTime from "./rAFCountingTime.js";
+export { rAFCountingTime };

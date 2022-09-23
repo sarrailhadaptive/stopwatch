@@ -17,3 +17,11 @@ export const startTimerButton = document.getElementsByClassName(
 export const lapContainer = document.getElementsByClassName("lap-container");
 export const lapNumberSelector = document.getElementsByClassName("lap-number");
 export const lapTimeSelector = document.getElementsByClassName("lap-time");
+
+export const resetSelectorsBackToInitialValues = () => {
+  mainTimerOutput.innerText = "00:00.00";
+  resetLapButton.classList.remove("set-lap-button");
+  resetLapButton.classList.add("reset-lap-button");
+  resetLapButton.firstElementChild.innerText = "Lap";
+  resetLapButton.onclick = null;
+};
