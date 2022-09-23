@@ -1,6 +1,6 @@
 "use strict";
 
-import { selectors } from "./index.js";
+import { lapCalculations, selectors } from "./index.js";
 let lapCounter = 0;
 export let lapNumber = 1;
 // --------------------------------------------------------------------------  //

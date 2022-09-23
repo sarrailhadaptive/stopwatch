@@ -1,4 +1,15 @@
 "use strict";
+
+// -------------------------------------------------------------------------------- //
+// --------------------------------- TO DO LIST ----------------------------------- //
+// 1. HOVER ANIMATIONS FOR BUTTONS
+// 2. DOTS IN BETWEEN BUTTONS
+// 4. REFACTOR FUNCTIONS USING ALGORITHMS
+// 5. MAKE A FILE FOR REQUEST ANIMATION FUNCTION
+// 6. MAKE A FILE FOR RESET STOPWATCH FUNCTION
+// 7. RETHINK VARIABLES AND FUNCTION NAMES
+// -------------------------------------------------------------------------------- //
+
 import {
   // HTMLSelectors.js
   selectors,
@@ -76,13 +87,13 @@ const stopStopwatchCounter = () => {
 };
 
 const requestAnimationFrameCallback = () => {
-  counter++;
-  lapTimeCounter++;
+  counter += 1.68;
+  lapTimeCounter += 1.68;
 
-  times.millis = counter % 100;
+  times.millis = Math.floor(counter % 100);
   times.seconds = Math.floor(counter / 100) % 60;
   times.minutes = Math.floor(counter / 6000) % 60;
-  lapTimes.millis = lapTimeCounter % 100;
+  lapTimes.millis = Math.floor(lapTimeCounter % 100);
   lapTimes.seconds = Math.floor(lapTimeCounter / 100) % 60;
   lapTimes.minutes = Math.floor(lapTimeCounter / 6000) % 60;
 
@@ -109,8 +120,10 @@ const resetStopwatch = () => {
   lapTimeCounter = 0;
   selectors.mainTimerOutput.innerText = "00:00.00";
   lapCalculations.resetSlowestAndFastestLap();
+  styles.removeEventListenersFromResetLapButton();
   selectors.resetLapButton.classList.remove("set-lap-button");
   selectors.resetLapButton.classList.add("reset-lap-button");
   selectors.resetLapButton.firstElementChild.innerText = "Lap";
   selectors.resetLapButton.onclick = null;
+  requestAnimationFrame_ID = undefined;
 };

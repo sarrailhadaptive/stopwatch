@@ -8,6 +8,9 @@ export const startStopButton =
   document.getElementsByClassName("start-stop-button")[0];
 export const resetLapButton =
   document.getElementsByClassName("reset-lap-button")[0];
+export const resetLapButtonContainer = document.getElementsByClassName(
+  "reset-lap-button-container"
+)[0];
 export const startTimerButton = document.getElementsByClassName(
   "start-stop-button-container"
 )[0];
