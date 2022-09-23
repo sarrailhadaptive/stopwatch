@@ -1,7 +1,7 @@
 "use strict";
+
 import { selectors } from "./index.js";
-import { isFirstLapOn } from "./insertHTMLAndElements.js";
-// BUTTON STYLES AND EVENTS
+
 export const setStartButtonStylesAndEvents = () => {
   selectors.startStopButton.classList.remove("set-stop-button");
   selectors.startStopButton.classList.add("start-stop-button");

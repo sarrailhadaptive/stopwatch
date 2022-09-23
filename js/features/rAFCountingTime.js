@@ -42,17 +42,23 @@ export const rAFResettersForResetStopwatch = () => {
   requestAnimationFrame_ID = undefined;
 };
 
-export const requestAnimationFrameCallback = () => {
+const formatMainTimer = () => {
   counter += 1.68;
-  lapTimeCounter += 1.68;
-
   times.centis = Math.floor(counter % 100);
   times.seconds = Math.floor(counter / 100) % 60;
   times.minutes = Math.floor(counter / 6000) % 60;
+};
+
+const formatLapTimer = () => {
+  lapTimeCounter += 1.68;
   lapTimes.centis = Math.floor(lapTimeCounter % 100);
   lapTimes.seconds = Math.floor(lapTimeCounter / 100) % 60;
   lapTimes.minutes = Math.floor(lapTimeCounter / 6000) % 60;
+};
 
+export const requestAnimationFrameCallback = () => {
+  formatMainTimer();
+  formatLapTimer();
   helpers.displayTimeOnMainTimer(times.centis, times.seconds, times.minutes);
   helpers.displayTimeOnFirstLapTimer(
     lapTimes.centis,
