@@ -21,3 +21,7 @@ export { lapCalculations };
 // rAFCountingTime.js
 import * as rAFCountingTime from "./rAFCountingTime.js";
 export { rAFCountingTime };
+
+// resetStopwatch.js
+import { resetStopwatch } from "./resetStopwatch.js";
+export { resetStopwatch };

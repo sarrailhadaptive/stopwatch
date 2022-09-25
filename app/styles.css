@@ -249,6 +249,14 @@
 .slowest-lap td {
   color: #ff3b30;
 }
+/* NAVIGATION BAR BOTTOM */
+
+.navigation-bar-bottom {
+  background-color: #1c1c1e;
+  width: 331px;
+  height: 66px;
+}
+
 /* TIMER */
 
 #timer h1 {

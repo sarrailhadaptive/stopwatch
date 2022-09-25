@@ -13,28 +13,19 @@ import {
   lapCalculations,
   // rAFCountingTime.js
   rAFCountingTime,
+  // resetStopwatch.js
+  resetStopwatch,
 } from "./features/index.js";
-
 // -------------------------------------------------------------------------------- //
-
-loaders.loadDefaultLapTable();
-
-const startStopwatchMain = () => {
-  startStopwatch();
-  selectors.startStopButton.onclick = () => {
-    stopStopwatchCounter();
-  };
-};
-selectors.startStopButton.onclick = () => {
-  startStopwatchMain();
-};
+// BORDER DOUBLE PROPERTY TO MAKE THE INNER BORDER OF THE START AND LAP BUTTONS
+// -------------------------------------------------------------------------------- //
 
 const startStopwatch = () => {
   loaders.loadFirstLapHTML();
   rAFCountingTime.reAssignCallback();
   styles.setStopButtonStylesAndEvents();
   selectors.startStopButton.onclick = () => {
-    stopStopwatchCounter();
+    stopStopwatch();
   };
   styles.setLapButtonStylesAndEvents();
   selectors.resetLapButton.onclick = () => {
@@ -45,7 +36,7 @@ const startStopwatch = () => {
   };
 };
 
-const stopStopwatchCounter = () => {
+const stopStopwatch = () => {
   rAFCountingTime.savePreviousCounterTime();
   cancelAnimationFrame(rAFCountingTime.requestAnimationFrame_ID);
   styles.setStartButtonStylesAndEvents();
@@ -54,19 +45,15 @@ const stopStopwatchCounter = () => {
   };
   styles.setResetButtonStylesAndEvents();
   selectors.resetLapButton.onclick = () => {
-    resetStopwatch(helpers.lapNumber);
+    resetStopwatch();
   };
 };
 
-const resetStopwatch = () => {
-  [...selectors.lapContainer].forEach((el, i) => {
-    if (i < helpers.lapNumber + 7) el.remove();
-  });
+const startApplication = () => {
   loaders.loadDefaultLapTable();
-  loaders.isFirstLapOnToggler();
-  helpers.setLapNumberTo1();
-  rAFCountingTime.rAFResettersForResetStopwatch();
-  lapCalculations.resetSlowestAndFastestLap();
-  styles.removeEventListenersFromResetLapButton();
-  selectors.resetSelectorsBackToInitialValues();
+  selectors.startStopButton.onclick = () => {
+    startStopwatch();
+  };
 };
+
+startApplication();
