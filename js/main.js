@@ -16,9 +16,6 @@ import {
   // resetStopwatch.js
   resetStopwatch,
 } from "./features/index.js";
-// -------------------------------------------------------------------------------- //
-// BORDER DOUBLE PROPERTY TO MAKE THE INNER BORDER OF THE START AND LAP BUTTONS
-// -------------------------------------------------------------------------------- //
 
 const startStopwatch = () => {
   loaders.loadFirstLapHTML();
