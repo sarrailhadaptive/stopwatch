@@ -1,6 +1,9 @@
 "use strict";
+
 export let isFirstLapOn = false;
 import { selectors } from "./index.js";
+
+// -------------------------------------- //
 
 export const loadDefaultLapTable = () => {
   selectors.lapScrollbarDiv.insertAdjacentHTML(

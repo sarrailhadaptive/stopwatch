@@ -3,6 +3,7 @@
 import { selectors } from "./index.js";
 let lapCounter = 0;
 export let lapNumber = 1;
+
 // --------------------------------------------------------------------------  //
 
 export const addPadStartToTime = (time) => {

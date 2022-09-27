@@ -17,6 +17,8 @@ import {
   resetStopwatch,
 } from "./features/index.js";
 
+// ---------------------------------- //
+
 const startStopwatch = () => {
   loaders.loadFirstLapHTML();
   rAFCountingTime.reAssignCallback();

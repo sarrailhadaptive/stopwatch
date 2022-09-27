@@ -1,7 +1,12 @@
 "use strict";
+
 import { selectors } from "./index.js";
+
 let slowestLap = 0;
 let fastestLap = Infinity;
+
+// --------------------------------------------- //
+
 export const calculateLapTime = (lastLapTime) => {
   if (lastLapTime > slowestLap) {
     displayRedIfSlowest(selectors.lapTimeSelector);
