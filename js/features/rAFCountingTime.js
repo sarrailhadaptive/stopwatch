@@ -18,13 +18,13 @@ export let times = {
 };
 export let requestAnimationFrame_ID = undefined;
 
-// ----------------------------------------------------- //
+// -----------------------------------------------------
 
 export const resetTimeForNewLap = () => {
   lapTimesResetter = counter;
 };
 
-export const setLapTimeCounterTo0 = () => {
+export const resetLapTimeCounter = () => {
   lapTimeCounter = 0;
 };
 
@@ -40,7 +40,7 @@ export const reAssignCallback = () => {
 export const rAFResettersForResetStopwatch = () => {
   counter = 0;
   lapTimesResetter = 0;
-  setLapTimeCounterTo0();
+  resetLapTimeCounter();
   requestAnimationFrame_ID = undefined;
 };
 

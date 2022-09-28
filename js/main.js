@@ -18,6 +18,12 @@ import {
 } from "./features/index.js";
 
 // ---------------------------------- //
+// ----------- TO DO LIST ----------- //
+// - 1. FIX VARIABLE NAMES, FOCUS ON BUSINESS LOGIC INSTEAD OF ACTUAL FUNCTIONALITY
+// - 2. CSS REFACTORING, USE FLEXBOX AND GRID, NO ABSOLUTE POSITIONING
+// - 3. HTML REFACTORING, USE SEMANTIC HTML, NO DIVS FOR EVERYTHING
+// - 4. FIX FIRST LAP, ARRAY PROBABLY A BETTER SOLUTION, OTHERWISE USE SWITCH INSTEAD OF LOTS OF IFS
+// ---------------------------------- //
 
 const startStopwatch = () => {
   loaders.loadFirstLapHTML();
@@ -31,7 +37,7 @@ const startStopwatch = () => {
     helpers.addNewLap(rAFCountingTime.counter);
     rAFCountingTime.resetTimeForNewLap();
     lapCalculations.calculateLapTime(rAFCountingTime.lapTimeCounter);
-    rAFCountingTime.setLapTimeCounterTo0();
+    rAFCountingTime.resetLapTimeCounter();
   };
 };
 

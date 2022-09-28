@@ -17,7 +17,7 @@ export const resetStopwatch = () => {
   loaders.isFirstLapOnToggler();
   helpers.setLapNumberTo1();
   rAFCountingTime.rAFResettersForResetStopwatch();
-  lapCalculations.resetSlowestAndFastestLap();
+  lapCalculations.resetLapStates();
   styles.removeEventListenersFromResetLapButton();
   selectors.resetSelectorsBackToInitialValues();
 };
