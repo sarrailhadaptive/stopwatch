@@ -19,6 +19,8 @@ export let times = {
 export let requestAnimationFrame_ID = undefined;
 
 // -----------------------------------------------------
+// 
+
 
 export const resetTimeForNewLap = () => {
   lapTimesResetter = counter;
@@ -31,6 +33,7 @@ export const resetLapTimeCounter = () => {
 export const savePreviousCounterTime = () => {
   previousCounter = counter;
 };
+
 export const reAssignCallback = () => {
   requestAnimationFrame_ID = requestAnimationFrame(
     requestAnimationFrameCallback

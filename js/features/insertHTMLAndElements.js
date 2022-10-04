@@ -5,6 +5,8 @@ import { selectors } from "./index.js";
 
 // -------------------------------------- //
 
+// Use a loop, insertCell, insertRow
+// separate display and bussines logic
 export const loadDefaultLapTable = () => {
   selectors.lapScrollbarDiv.insertAdjacentHTML(
     "afterbegin",
